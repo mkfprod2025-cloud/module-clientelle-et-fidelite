@@ -190,7 +190,44 @@
             <p class="modal-text">Découvrez l'ensemble de nos saveurs et créations culinaires.</p>
         </div>
     </div>
+<div id="modal-avis" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal-avis')">&times;</span>
+        <h2 class="modal-title">Votre Avis</h2>
+        <div style="text-align:center;">
+            <i class="fa-solid fa-star" style="color:var(--gold); font-size:3rem;"></i>
+            <p class="modal-text">Vous avez aimé votre expérience ? <br> Aidez-nous avec 5 étoiles sur Google !</p>
+            <a href="LIEN_GOOGLE_MAPS_ICI" target="_blank" class="social-item" style="background:var(--gold); color:black; padding:10px 20px; border-radius:10px; font-weight:bold; margin-top:15px; display:inline-block; text-decoration:none;">Noter sur Google</a>
+        </div>
+    </div>
+</div>
 
+<div id="modal-wifi" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal-wifi')">&times;</span>
+        <h2 class="modal-title">Accès Wi-Fi</h2>
+        <div style="text-align:center; padding:20px;">
+            <p class="modal-text">Réseau : <strong>NOM_DU_RESEAU</strong></p>
+            <p class="modal-text">Code : <strong style="color:var(--gold); font-size:1.2rem;">MOT_DE_PASSE</strong></p>
+            <i class="fa-solid fa-qrcode" style="font-size:4rem; margin-top:15px;"></i>
+        </div>
+    </div>
+</div>
+
+<div id="modal-plus" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal-plus')">&times;</span>
+        <h2 class="modal-title">Services & Infos</h2>
+        <div class="social-grid">
+            <a href="#" class="social-item"><i class="fa-brands fa-uber"></i><span>Uber</span></a>
+            <a href="#" class="social-item"><i class="fa-solid fa-calendar-day"></i><span>Events</span></a>
+            <a href="#" class="social-item"><i class="fa-solid fa-bullhorn"></i><span>Promos</span></a>
+            <a href="#" class="social-item"><i class="fa-solid fa-owl"></i><span>TripAdvisor</span></a>
+            <a href="#" class="social-item"><i class="fa-solid fa-utensils"></i><span>LaFourchette</span></a>
+            <a href="#" class="social-item"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
+        </div>
+    </div>
+</div>
     <script>
         function openModal(id) {
             const m = document.getElementById(id);
@@ -219,4 +256,5 @@
 </body>
 
 </html>
+
 
