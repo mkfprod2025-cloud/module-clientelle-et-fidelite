@@ -62,18 +62,11 @@
             box-shadow: 0 0 30px var(--gold-glow);
             z-index: 20;
         }
-
-        .center-core {
-            position: relative;
-            width: 40%; height: 40%;
-            background: linear-gradient(145deg, #1a1a1a, #000);
-            border: 2px solid var(--gold);
-            border-radius: 28px;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10;
-            cursor: pointer;
-            overflow: hidden;
-        }
+.center-core, .orbit-btn, .circle-item {
+    /* Suppression de 'all' : focus exclusif sur les propriétés transformées par le GPU */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease, opacity 0.3s ease;
+    will-change: transform; /* Force l'isolation sur un calque de composition matériel */
+}
         .center-core img { width: 100%; height: 100%; object-fit: cover; }
 
         .orbit-btn {
@@ -351,6 +344,7 @@ function closeModal(id) {
     </script>
 </body>
 </html>
+
 
 
 
