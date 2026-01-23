@@ -5,181 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hub Orbital - Final Version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --gold: #d4af37;
-            --gold-glow: rgba(212, 175, 55, 0.4);
-            --bg-dark: #050505;
-            --ring-color: rgba(212, 175, 55, 0.15);
-            --modal-bg: rgba(0, 0, 0, 0.96);
-            --modal-card: #121212;
-        }
+  <style>
+    :root {
+        --gold: #d4af37;
+        --gold-glow: rgba(212, 175, 55, 0.4);
+        --bg-dark: #050505;
+        --ring-color: rgba(212, 175, 55, 0.15);
+        --modal-bg: rgba(0, 0, 0, 0.96);
+        --modal-card: #121212;
+    }
 
-        /* --- Base & Reset --- */
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background: var(--bg-dark);
-            color: var(--gold);
-            font-family: 'Inter', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-            touch-action: none; /* Empêche le zoom tactile accidentel */
-        }
+    /* --- Base --- */
+    body, html {
+        margin: 0; padding: 0; width: 100%; height: 100%;
+        background: var(--bg-dark); color: var(--gold);
+        font-family: 'Inter', sans-serif;
+        display: flex; justify-content: center; align-items: center;
+        overflow: hidden; touch-action: none;
+    }
 
-        /* --- Fond Bokeh --- */
-        .bokeh {
-            position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
-            z-index: -1;
-        }
+    .bokeh {
+        position: absolute; width: 100%; height: 100%;
+        background: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+        z-index: -1;
+    }
 
-        /* --- Conteneur Principal --- */
-        .orbital-container {
-            position: relative;
-            width: 90vw; height: 90vw;
-            max-width: 420px; max-height: 420px;
-            display: flex; justify-content: center; align-items: center;
-        }
+    /* --- BULLES (MENU PRINCIPAL) --- */
+    .orbital-container {
+        position: relative;
+        width: 90vw; height: 90vw;
+        max-width: 400px; max-height: 400px;
+        display: flex; justify-content: center; align-items: center;
+    }
 
-        .main-ring {
-            position: absolute;
-            width: 75%; height: 75%;
-            border: 1px solid var(--ring-color);
-            border-radius: 50%;
-        }
+    .main-ring {
+        position: absolute; width: 75%; height: 75%;
+        border: 1px solid var(--ring-color); border-radius: 50%;
+    }
 
-        /* --- Styles des Boutons & Centre --- */
-        .center-core, .orbit-btn {
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
+    .center-core {
+        width: 35%; height: 35%; border-radius: 50%;
+        border: 2px solid var(--gold); overflow: hidden;
+        z-index: 10; cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .center-core img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Effet Glow au survol */
-        .center-core:hover, .orbit-btn:hover {
-            transform: scale(1.08);
-            border-color: var(--gold);
-            box-shadow: 0 0 30px var(--gold-glow);
-            z-index: 20;
-        }
-.center-core, .orbit-btn, .circle-item {
-    /* Suppression de 'all' : focus exclusif sur les propriétés transformées par le GPU */
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease, opacity 0.3s ease;
-    will-change: transform; /* Force l'isolation sur un calque de composition matériel */
-}
-        .center-core img { width: 100%; height: 100%; object-fit: cover; }
+    .orbit-btn {
+        position: absolute; width: 26%; height: 26%;
+        background: rgba(15, 15, 15, 0.95);
+        border: 1px solid rgba(212, 175, 55, 0.4);
+        border-radius: 50%; display: flex; flex-direction: column;
+        justify-content: center; align-items: center;
+        color: var(--gold); backdrop-filter: blur(8px); z-index: 5;
+        cursor: pointer; transition: all 0.3s ease;
+    }
+    .orbit-btn i { font-size: 1.2rem; margin-bottom: 4px; }
+    .orbit-btn span { font-size: 0.6rem; text-transform: uppercase; font-weight: 700; }
 
-        .orbit-btn {
-            position: absolute;
-            width: 28%; height: 28%;
-            background: rgba(15, 15, 15, 0.95);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            border-radius: 50%;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            color: var(--gold);
-            backdrop-filter: blur(8px);
-            z-index: 5;
-            cursor: pointer;
-        }
-        .orbit-btn i { font-size: 1.5rem; margin-bottom: 5px; }
-        .orbit-btn span { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; text-align: center; }
+    /* Positions relatives pour mobile */
+    .pos-1 { top: -2%; } .pos-2 { top: 18%; right: -2%; }
+    .pos-3 { bottom: 18%; right: -2%; } .pos-4 { bottom: -2%; }
+    .pos-5 { bottom: 18%; left: -2%; } .pos-6 { top: 18%; left: -2%; }
 
-        /* --- Positions (Horloge) --- */
-        .pos-1 { top: -5%; }              /* 12h */
-        .pos-2 { top: 20%; right: -5%; }  /* 2h */
-        .pos-3 { bottom: 20%; right: -5%; } /* 4h */
-        .pos-4 { bottom: -5%; }           /* 6h */
-        .pos-5 { bottom: 20%; left: -5%; }  /* 8h */
-        .pos-6 { top: 20%; left: -5%; }   /* 10h */
+    /* --- BOUTONS (MENU INTERNE MODAL) --- */
+    .circle-menu-container {
+        position: relative;
+        width: 75vw; height: 75vw; /* S'adapte à la largeur mobile */
+        max-width: 280px; max-height: 280px;
+        margin: 20px auto;
+    }
 
-        /* --- Système de Modals (Pop-ups) --- */
-        .modal {
-            display: none; position: fixed; z-index: 1000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: var(--modal-bg); backdrop-filter: blur(15px);
-            justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s ease;
-        }
-        .modal.active { display: flex; opacity: 1; }
+    .circle-item {
+        position: absolute;
+        top: 50%; left: 50%; /* Centre exact */
+        width: 25%; height: 25%; /* Proportionnel au parent */
+        background: rgba(30, 30, 30, 0.9);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 50%; display: flex; flex-direction: column;
+        justify-content: center; align-items: center;
+        text-decoration: none; color: white;
+        /* Le secret : on translate par rapport au centre propre (-50%) + la variable */
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
+        transition: all 0.3s ease;
+    }
 
-        .modal-content {
-            background: var(--modal-card); width: 85%; max-width: 380px;
-            padding: 30px 20px; border-radius: 20px; 
-            border: 1px solid var(--gold-glow);
-            position: relative; color: white; text-align: center;
-            transform: translateY(30px); transition: transform 0.3s ease;
-            max-height: 85vh; overflow-y: auto;
-        }
-        .modal.active .modal-content { transform: translateY(0); }
+    /* Coordonnées en % pour ne jamais déborder */
+    .cp-1 { --x: 0%;    --y: -140%; }
+    .cp-2 { --x: 120%;  --y: -70%; }
+    .cp-3 { --x: 120%;  --y: 70%; }
+    .cp-4 { --x: 0%;    --y: 140%; }
+    .cp-5 { --x: -120%; --y: 70%; }
+    .cp-6 { --x: -120%; --y: -70%; }
 
-        .close-btn {
-            position: absolute; top: 15px; right: 20px;
-            font-size: 28px; color: var(--gold); cursor: pointer;
-            line-height: 1;
-        }
+    .circle-item:hover { filter: brightness(1.4); border-color: var(--gold); transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.1); }
+    .circle-item i { font-size: 1.2rem; color: #d4af37; margin-bottom: 3px; }
+    .circle-item span { font-size: 0.5rem; text-transform: uppercase; }
 
-        .modal-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .modal-text { font-size: 0.95rem; line-height: 1.5; color: #ddd; margin-bottom: 20px; }
-        .modal-image { width: 100%; border-radius: 12px; margin-bottom: 15px; height: 180px; object-fit: cover; }
-.circle-menu-container {
-    position: relative;
-    width: 80%; /* Utilise 80% de la largeur de la modal */
-    aspect-ratio: 1 / 1; /* Force un carré parfait */
-    margin: 20px auto;
-}
+    .center-icon-deco {
+        position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem; color: #d4af37; opacity: 0.2;
+    }
 
-.circle-item {
-    position: absolute;
-    top: 50%; left: 50%; /* Centre absolu */
-    width: 25%; height: 25%; /* Taille proportionnelle au container */
-    background: rgba(30, 30, 30, 0.9);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    border-radius: 50%;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    text-decoration: none; color: white;
-    will-change: transform;
-    /* On utilise translate(-50%, -50%) pour le centrage propre + les variables dynamiques */
-    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
-}
-/* --x et --y représentent maintenant le décalage radial par rapport au centre (50%) */
-.cp-1 { --x: 0%;    --y: -150%; }
-.cp-2 { --x: 130%;  --y: -75%;  }
-.cp-3 { --x: 130%;  --y: 75%;   }
-.cp-4 { --x: 0%;    --y: 150%;  }
-.cp-5 { --x: -130%; --y: 75%;   }
-.cp-6 { --x: -130%; --y: -75%;  }
-
-.circle-item:hover {
-    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.1);
-    filter: brightness(1.4);
-    border-color: var(--gold);
-}
-.circle-item i { font-size: 1.5rem; color: #d4af37; margin-bottom: 4px; }
-.circle-item span { font-size: 0.55rem; text-transform: uppercase; }
-.circle-item:hover {
-    transform: translate(calc(105px + var(--x)), calc(105px + var(--y))) scale(1.1);
-    filter: brightness(1.4);
-    border-color: var(--gold);
-}
-.center-icon-deco {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2.5rem; color: #d4af37; opacity: 0.2;
-}
-        /* Vidéo */
-        .video-box { width: 100%; aspect-ratio: 16/9; background: black; border-radius: 10px; overflow: hidden; }
-        
-        /* Bouton lien générique */
-        .action-btn {
-            display: inline-block; background: var(--gold); color: black;
-            padding: 10px 25px; border-radius: 50px; text-decoration: none;
-            font-weight: bold; margin-top: 10px;
-        }
-    </style>
-</head>
+    /* --- Modals --- */
+    .modal {
+        display: none; position: fixed; z-index: 1000;
+        left: 0; top: 0; width: 100%; height: 100%;
+        background: var(--modal-bg); backdrop-filter: blur(15px);
+        justify-content: center; align-items: center;
+        opacity: 0; transition: opacity 0.3s ease;
+    }
+    .modal.active { display: flex; opacity: 1; }
+    .modal-content {
+        background: var(--modal-card); width: 88%; max-width: 380px;
+        padding: 30px 15px; border-radius: 20px; border: 1px solid var(--gold-glow);
+        position: relative; color: white; text-align: center;
+    }
+    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; color: var(--gold); cursor: pointer; }
+    .modal-title { color: var(--gold); font-size: 1.2rem; margin-bottom: 15px; text-transform: uppercase; }
+    .video-box { width: 100%; aspect-ratio: 16/9; background: black; border-radius: 10px; overflow: hidden; }
+</style>
+  </head>
 <body>
 
     <div class="bokeh"></div>
@@ -343,6 +291,7 @@ window.onclick = function(e) {
 } </script>
 </body>
 </html>
+
 
 
 
