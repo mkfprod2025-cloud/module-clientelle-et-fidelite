@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub Orbital - Vision d'ensemble</title>
+    <title>Hub Orbital - Final Version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -11,160 +11,338 @@
             --gold-glow: rgba(212, 175, 55, 0.4);
             --bg-dark: #050505;
             --ring-color: rgba(212, 175, 55, 0.15);
-            --modal-bg: rgba(0, 0, 0, 0.98);
+            --modal-bg: rgba(0, 0, 0, 0.96);
+            --modal-card: #121212;
         }
 
-        /* --- STRUCTURE DE BASE --- */
+        /* --- Base & Reset --- */
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background: var(--bg-dark); color: var(--gold);
+            background: var(--bg-dark);
+            color: var(--gold);
             font-family: 'Inter', sans-serif;
             display: flex; justify-content: center; align-items: center;
-            overflow: hidden; touch-action: none;
+            overflow: hidden;
+            touch-action: none; /* Empêche le zoom tactile accidentel */
         }
 
-        /* --- HUB PRINCIPAL (Remplit l'écran) --- */
+        /* --- Fond Bokeh --- */
+        .bokeh {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* --- Conteneur Principal --- */
         .orbital-container {
             position: relative;
-            /* Utilisation de vmin pour garantir que ça tient toujours dans l'écran quel que soit le sens */
-            width: 90vmin; height: 90vmin;
-            max-width: 480px; max-height: 480px;
+            width: 90vw; height: 90vw;
+            max-width: 420px; max-height: 420px;
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* Anneau décoratif */
         .main-ring {
-            position: absolute; width: 75%; height: 75%;
-            border: 1px solid var(--ring-color); border-radius: 50%;
-            z-index: 0;
+            position: absolute;
+            width: 75%; height: 75%;
+            border: 1px solid var(--ring-color);
+            border-radius: 50%;
         }
 
-        /* LOGO CENTRAL (Le fond qui empiète) */
-        .center-core {
-            position: absolute;
-            width: 55%; height: 55%; /* Assez grand pour être sous les bulles */
-            border-radius: 50%;
-            border: 2px solid var(--gold);
-            overflow: hidden;
-            z-index: 1; /* Dessous les boutons */
-            box-shadow: 0 0 30px rgba(0,0,0,1);
-            cursor: pointer;
+        /* --- Styles des Boutons & Centre --- */
+        .center-core, .orbit-btn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
+
+        /* Effet Glow au survol */
+        .center-core:hover, .orbit-btn:hover {
+            transform: scale(1.08);
+            border-color: var(--gold);
+            box-shadow: 0 0 30px var(--gold-glow);
+            z-index: 20;
+        }
+.center-core, .orbit-btn, .circle-item {
+    /* Suppression de 'all' : focus exclusif sur les propriétés transformées par le GPU */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease, opacity 0.3s ease;
+    will-change: transform; /* Force l'isolation sur un calque de composition matériel */
+}
         .center-core img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* BOUTONS PÉRIPHÉRIQUES (Taille Adaptative) */
         .orbit-btn {
             position: absolute;
-            width: 28%; height: 28%; /* Taille proportionnelle au container */
-            background: rgba(10, 10, 10, 0.95);
-            border: 1.5px solid var(--gold);
+            width: 28%; height: 28%;
+            background: rgba(15, 15, 15, 0.95);
+            border: 1px solid rgba(212, 175, 55, 0.4);
             border-radius: 50%;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            z-index: 10; /* Toujours au-dessus du logo */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            color: var(--gold);
+            backdrop-filter: blur(8px);
+            z-index: 5;
             cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        /* Positions calculées par rapport au centre (50%) */
-        .pos-1 { top: 0%; left: 50%; transform: translate(-50%, -10%); }
-        .pos-2 { top: 25%; right: 0%; transform: translate(10%, -50%); }
-        .pos-3 { bottom: 25%; right: 0%; transform: translate(10%, 50%); }
-        .pos-4 { bottom: 0%; left: 50%; transform: translate(-50%, 10%); }
-        .pos-5 { bottom: 25%; left: 0%; transform: translate(-10%, 50%); }
-        .pos-6 { top: 25%; left: 0%; transform: translate(-10%, -50%); }
-
         .orbit-btn i { font-size: 1.5rem; margin-bottom: 5px; }
-        .orbit-btn span { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+        .orbit-btn span { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; text-align: center; }
 
-        /* --- MODALS --- */
+        /* --- Positions (Horloge) --- */
+        .pos-1 { top: -5%; }              /* 12h */
+        .pos-2 { top: 20%; right: -5%; }  /* 2h */
+        .pos-3 { bottom: 20%; right: -5%; } /* 4h */
+        .pos-4 { bottom: -5%; }           /* 6h */
+        .pos-5 { bottom: 20%; left: -5%; }  /* 8h */
+        .pos-6 { top: 20%; left: -5%; }   /* 10h */
+
+        /* --- Système de Modals (Pop-ups) --- */
         .modal {
             display: none; position: fixed; z-index: 1000;
             left: 0; top: 0; width: 100%; height: 100%;
             background: var(--modal-bg); backdrop-filter: blur(15px);
             justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
         }
-        .modal.active { display: flex; }
+        .modal.active { display: flex; opacity: 1; }
 
         .modal-content {
-            background: #111; width: 90%; max-width: 380px;
-            padding: 40px 10px; border-radius: 30px;
+            background: var(--modal-card); width: 85%; max-width: 380px;
+            padding: 30px 20px; border-radius: 20px; 
             border: 1px solid var(--gold-glow);
-            position: relative; text-align: center;
+            position: relative; color: white; text-align: center;
+            transform: translateY(30px); transition: transform 0.3s ease;
+            max-height: 85vh; overflow-y: auto;
+        }
+        .modal.active .modal-content { transform: translateY(0); }
+
+        .close-btn {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 28px; color: var(--gold); cursor: pointer;
+            line-height: 1;
         }
 
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: var(--gold); }
+        .modal-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .modal-text { font-size: 0.95rem; line-height: 1.5; color: #ddd; margin-bottom: 20px; }
+        .modal-image { width: 100%; border-radius: 12px; margin-bottom: 15px; height: 180px; object-fit: cover; }
+.circle-menu-container {
+    position: relative;
+    width: 80%; /* Utilise 80% de la largeur de la modal */
+    aspect-ratio: 1 / 1; /* Force un carré parfait */
+    margin: 20px auto;
+}
 
-        /* --- SOUS-MENUS INTERNES (MODAL) --- */
-        .circle-menu-container {
-            position: relative;
-            width: 80vw; height: 80vw;
-            max-width: 280px; max-height: 280px;
-            margin: 20px auto;
-            display: flex; justify-content: center; align-items: center;
+.circle-item {
+    position: absolute;
+    top: 50%; left: 50%; /* Centre absolu */
+    width: 25%; height: 25%; /* Taille proportionnelle au container */
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-decoration: none; color: white;
+    will-change: transform;
+    /* On utilise translate(-50%, -50%) pour le centrage propre + les variables dynamiques */
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+}
+/* --x et --y représentent maintenant le décalage radial par rapport au centre (50%) */
+.cp-1 { --x: 0%;    --y: -150%; }
+.cp-2 { --x: 130%;  --y: -75%;  }
+.cp-3 { --x: 130%;  --y: 75%;   }
+.cp-4 { --x: 0%;    --y: 150%;  }
+.cp-5 { --x: -130%; --y: 75%;   }
+.cp-6 { --x: -130%; --y: -75%;  }
+
+.circle-item:hover {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.1);
+    filter: brightness(1.4);
+    border-color: var(--gold);
+}
+.circle-item i { font-size: 1.5rem; color: #d4af37; margin-bottom: 4px; }
+.circle-item span { font-size: 0.55rem; text-transform: uppercase; }
+.circle-item:hover {
+    transform: translate(calc(105px + var(--x)), calc(105px + var(--y))) scale(1.1);
+    filter: brightness(1.4);
+    border-color: var(--gold);
+}
+.center-icon-deco {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem; color: #d4af37; opacity: 0.2;
+}
+        /* Vidéo */
+        .video-box { width: 100%; aspect-ratio: 16/9; background: black; border-radius: 10px; overflow: hidden; }
+        
+        /* Bouton lien générique */
+        .action-btn {
+            display: inline-block; background: var(--gold); color: black;
+            padding: 10px 25px; border-radius: 50px; text-decoration: none;
+            font-weight: bold; margin-top: 10px;
         }
-
-        .circle-item {
-            position: absolute;
-            width: 26%; height: 26%;
-            background: #151515; border: 1px solid var(--gold); border-radius: 50%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-decoration: none; color: white;
-            z-index: 20;
-        }
-
-        /* Coordonnées relatives pour les 6 icônes internes */
-        .cp-1 { transform: translateY(-130%); }
-        .cp-2 { transform: translate(115%, -65%); }
-        .cp-3 { transform: translate(115%, 65%); }
-        .cp-4 { transform: translateY(130%); }
-        .cp-5 { transform: translate(-115%, 65%); }
-        .cp-6 { transform: translate(-115%, -65%); }
-
-        .circle-item i { font-size: 1.3rem; color: var(--gold); margin-bottom: 4px; }
-        .circle-item span { font-size: 0.55rem; font-weight: bold; }
-
-        .center-icon-deco { font-size: 2.5rem; color: var(--gold); opacity: 0.2; }
     </style>
 </head>
 <body>
 
+    <div class="bokeh"></div>
+
     <div class="orbital-container">
         <div class="main-ring"></div>
-        
-        <div class="center-core" onclick="handleZoneZero()">
-            <img src="https://via.placeholder.com/300/d4af37/000000?text=LOGO" alt="Logo">
+
+        <div class="center-core" id="zone-zero" onclick="handleZoneZero()">
+            <img src="https://via.placeholder.com/200/d4af37/000000?text=LOGO" alt="Logo Restaurant">
         </div>
 
-        <div class="orbit-btn pos-1" onclick="openModal('modal-plat')"><i class="fa-solid fa-utensils"></i><span>Plat</span></div>
-        <div class="orbit-btn pos-2" onclick="openModal('modal-menu')"><i class="fa-solid fa-book-open"></i><span>Carte</span></div>
-        <div class="orbit-btn pos-3" onclick="openModal('modal-avis')"><i class="fa-solid fa-star"></i><span>Avis</span></div>
-        <div class="orbit-btn pos-4" onclick="openModal('modal-social')"><i class="fa-solid fa-hashtag"></i><span>Suivre</span></div>
-        <div class="orbit-btn pos-5" onclick="openModal('modal-plus')"><i class="fa-solid fa-plus"></i><span>Hub</span></div>
-        <div class="orbit-btn pos-6" onclick="openModal('modal-wifi')"><i class="fa-solid fa-wifi"></i><span>Wi-Fi</span></div>
+        <div class="orbit-btn pos-1" onclick="openModal('modal-plat')">
+            <i class="fa-solid fa-utensils"></i>
+            <span>Plat</span>
+        </div>
+
+        <div class="orbit-btn pos-2" onclick="openModal('modal-menu')">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Carte</span>
+        </div>
+
+        <div class="orbit-btn pos-3" onclick="openModal('modal-avis')">
+            <i class="fa-solid fa-star"></i>
+            <span>Avis</span>
+        </div>
+
+        <div class="orbit-btn pos-4" onclick="openModal('modal-social')">
+            <i class="fa-solid fa-hashtag"></i>
+            <span>Suivre</span>
+        </div>
+
+        <div class="orbit-btn pos-5" onclick="openModal('modal-plus')">
+            <i class="fa-solid fa-plus"></i>
+            <span>Hub</span>
+        </div>
+
+        <div class="orbit-btn pos-6" onclick="openModal('modal-wifi')">
+            <i class="fa-solid fa-wifi"></i>
+            <span>Wi-Fi</span>
+        </div>
     </div>
 
-    <div id="modal-social" class="modal">
+    <div id="modal-video" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modal-social')">&times;</span>
-            <h2 style="color:var(--gold)">Communauté</h2>
-            <div class="circle-menu-container">
-                <i class="fa-solid fa-share-nodes center-icon-deco"></i>
-                <a href="#" class="circle-item cp-1"><i class="fa-brands fa-instagram"></i><span>Insta</span></a>
-                <a href="#" class="circle-item cp-2"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a>
-                <a href="#" class="circle-item cp-3"><i class="fa-brands fa-facebook"></i><span>Fb</span></a>
-                <a href="#" class="circle-item cp-4"><i class="fa-brands fa-whatsapp"></i><span>What</span></a>
-                <a href="#" class="circle-item cp-5"><i class="fa-brands fa-snapchat"></i><span>Snap</span></a>
-                <a href="#" class="circle-item cp-6"><i class="fa-brands fa-x-twitter"></i><span>X</span></a>
+            <span class="close-btn" onclick="closeModal('modal-video')">&times;</span>
+            <div class="video-box" id="video-container"></div>
+            <p style="margin-top:15px; color:#aaa;">Immersion au cœur du restaurant.</p>
+        </div>
+    </div>
+
+    <div id="modal-plat" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-plat')">&times;</span>
+            <h2 class="modal-title">Suggestion</h2>
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500" class="modal-image" alt="Plat">
+            <h3>Souris d'Agneau Confite</h3>
+            <p class="modal-text">Cuisson de 7 heures au thym frais, accompagnée de sa purée maison.</p>
+            <span style="color:var(--gold); font-size:1.2rem; font-weight:bold;">24€</span>
+        </div>
+    </div>
+
+    <div id="modal-menu" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-menu')">&times;</span>
+            <h2 class="modal-title">La Carte</h2>
+            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=500" class="modal-image" alt="Menu">
+            <p class="modal-text">Découvrez nos entrées, plats et desserts faits maison.</p>
+            <a href="#" class="action-btn">Voir le PDF</a>
+        </div>
+    </div>
+
+    <div id="modal-avis" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-avis')">&times;</span>
+            <h2 class="modal-title">Votre Avis Compte</h2>
+            <div style="margin: 20px 0;">
+                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
+                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
+                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
+                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
+                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
             </div>
+            <p class="modal-text">Vous avez passé un bon moment ?<br>Dites-le nous sur Google !</p>
+            <a href="#" class="action-btn"><i class="fa-brands fa-google"></i> Noter maintenant</a>
+        </div>
+</div>
+<div id="modal-social" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal-social')">&times;</span>
+        <h2 class="modal-title">Communauté</h2>
+        
+        <div class="circle-menu-container">
+            <i class="fa-solid fa-share-nodes center-icon-deco"></i>
+
+            <a href="#" class="circle-item cp-1"><i class="fa-brands fa-instagram"></i><span>Insta</span></a>
+            <a href="#" class="circle-item cp-2"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a>
+            <a href="#" class="circle-item cp-3"><i class="fa-brands fa-facebook"></i><span>Fb</span></a>
+            <a href="#" class="circle-item cp-4"><i class="fa-brands fa-whatsapp"></i><span>What</span></a>
+            <a href="#" class="circle-item cp-5"><i class="fa-brands fa-snapchat"></i><span>Snap</span></a>
+            <a href="#" class="circle-item cp-6"><i class="fa-brands fa-x-twitter"></i><span>X</span></a>
+        </div>
+    </div>
+</div>
+<div id="modal-plus" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal-plus')">&times;</span>
+        <h2 class="modal-title">Services</h2>
+
+        <div class="circle-menu-container">
+            <i class="fa-solid fa-bell-concierge center-icon-deco"></i>
+            
+            <a href="#" class="circle-item cp-1"><i class="fa-brands fa-uber"></i><span>Uber</span></a>
+            <a href="#" class="circle-item cp-2"><i class="fa-solid fa-calendar-check"></i><span>Book</span></a>
+            <a href="#" class="circle-item cp-3"><i class="fa-solid fa-gifts"></i><span>Promo</span></a>
+            <a href="#" class="circle-item cp-4"><i class="fa-brands fa-tripadvisor"></i><span>Trip</span></a>
+            <a href="#" class="circle-item cp-5"><i class="fa-solid fa-utensils"></i><span>Fork</span></a>
+            <a href="#" class="circle-item cp-6"><i class="fa-solid fa-envelope"></i><span>Mail</span></a>
+        </div>
+    </div>
+</div>
+    <div id="modal-wifi" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-wifi')">&times;</span>
+            <h2 class="modal-title">Accès Wi-Fi</h2>
+            <i class="fa-solid fa-wifi" style="font-size:3rem; color:var(--gold); margin-bottom:20px;"></i>
+            <p class="modal-text">Réseau : <strong>LeBistrot_Guest</strong></p>
+            <p class="modal-text">Mot de passe :</p>
+            <div style="background:#222; padding:10px; border-radius:8px; border:1px dashed var(--gold); display:inline-block; margin-bottom:15px;">
+                <strong style="color:white; font-size:1.2rem; letter-spacing:1px;">GOURMET2024</strong>
+            </div>
+            <p style="font-size:0.8rem; color:#888;">Scannez le QR Code sur la table pour une connexion directe.</p>
         </div>
     </div>
 
     <script>
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        window.onclick = function(e) { if(e.target.classList.contains('modal')) closeModal(e.target.id); }
-    </script>
+function openModal(id) {
+    const m = document.getElementById(id);
+    if(m) m.classList.add('active');
+}
+
+function closeModal(id) {
+    const m = document.getElementById(id);
+    if(m) {
+        m.classList.remove('active');
+        if(id === 'modal-video') {
+            document.getElementById('video-container').innerHTML = '';
+        }
+    }
+}
+
+function handleZoneZero() {
+    const container = document.getElementById('video-container');
+    container.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    openModal('modal-video');
+}
+
+window.onclick = function(e) {
+    if (e.target.classList.contains('modal')) {
+        closeModal(e.target.id);
+    }
+} </script>
 </body>
 </html>
+
+
+
