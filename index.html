@@ -101,12 +101,13 @@
     transform: translate(var(--x), var(--y));
     z-index: 2;
 }
-.cp-1 { --x: 0%;    --y: -140%; }
-.cp-2 { --x: 130%;  --y: -70%;  }
-.cp-3 { --x: 130%;  --y: 70%;   }
-.cp-4 { --x: 0%;    --y: 140%;  }
-.cp-5 { --x: -130%; --y: 70%;   }
-.cp-6 { --x: -130%; --y: -70%;  }
+/* Espacement calculé sur le rayon dynamique */
+.cp-1 { --x: 0;      --y: -22vw; }
+.cp-2 { --x: 19vw;   --y: -11vw; }
+.cp-3 { --x: 19vw;   --y: 11vw;  }
+.cp-4 { --x: 0;      --y: 22vw;  }
+.cp-5 { --x: -19vw;  --y: 11vw;  }
+.cp-6 { --x: -19vw;  --y: -11vw; }
         .circle-item:hover { transform: translate(var(--x), var(--y)) scale(1.1); filter: brightness(1.2); }
       
         .center-icon-deco {
@@ -224,6 +225,7 @@
     </script>
 </body>
 </html>
+
 
 
 
