@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hub Orbital - Final Version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
+  <style>
     :root {
         --gold: #d4af37;
         --gold-glow: rgba(212, 175, 55, 0.4);
         --bg-dark: #050505;
         --ring-color: rgba(212, 175, 55, 0.15);
-        --modal-bg: rgba(0, 0, 0, 0.96);
-        --modal-card: #121212;
     }
 
     body, html {
@@ -23,109 +21,103 @@
         overflow: hidden; touch-action: none;
     }
 
-    /* --- HUB PRINCIPAL --- */
+    /* --- HUB PRINCIPAL : OCCUPATION MAXIMALE --- */
     .orbital-container {
         position: relative;
-        width: 90vmin; height: 90vmin; /* Remplit l'écran sans déborder */
-        max-width: 420px; max-height: 420px;
+        /* On utilise la hauteur pour définir la taille sur mobile portrait */
+        width: 95vw; 
+        height: 60svh; /* Occupe 60% de la hauteur réelle de l'écran */
+        max-width: 500px; 
+        max-height: 500px;
         display: flex; justify-content: center; align-items: center;
     }
 
-    .main-ring {
-        position: absolute; width: 75%; height: 75%;
-        border: 1px solid var(--ring-color); border-radius: 50%;
-        z-index: 0;
-    }
-
-    /* LOGO : Grandit et passe en dessous */
+    /* LOGO : EXPLOSION DE TAILLE & DÉBORDEMENT */
     .center-core {
         position: absolute;
-        width: 48%; height: 48%; /* Empiète visuellement */
+        width: 65%; height: 65%; /* Très grand pour que les bulles soient "posées" dessus */
         border-radius: 50%;
-        border: 2px solid var(--gold);
+        border: 1px solid var(--gold);
         overflow: hidden;
-        z-index: 1; /* Sous les boutons */
+        z-index: 1; /* Sous les bulles périphériques */
         background: #000;
-        transition: transform 0.3s ease;
+        box-shadow: 0 0 20px rgba(0,0,0,0.8);
     }
-    .center-core img { width: 100%; height: 100%; object-fit: cover; }
+    .center-core img { 
+        width: 100%; height: 100%; 
+        object-fit: cover; /* L'image remplit tout le cercle sans déformation */
+        opacity: 0.8; /* Légère transparence pour le style */
+    }
 
-    /* BOUTONS DU HUB */
+    /* BULLES PÉRIPHÉRIQUES : FORMAT XXL */
     .orbit-btn {
         position: absolute;
-        width: 30%; height: 30%; /* Taille généreuse */
-        background: rgba(15, 15, 15, 0.98);
-        border: 1px solid var(--gold);
+        width: 100px; height: 100px; /* Taille fixe confortable au doigt */
+        background: rgba(10, 10, 10, 0.95);
+        border: 2px solid var(--gold);
         border-radius: 50%;
         display: flex; flex-direction: column;
         justify-content: center; align-items: center;
-        z-index: 5; /* Au-dessus du logo */
+        z-index: 10; /* Toujours au-dessus du logo */
         cursor: pointer;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
-    .orbit-btn i { font-size: 1.4rem; margin-bottom: 4px; }
-    .orbit-btn span { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
 
-    /* Positions Hub (Calculées pour ne pas s'excentrer) */
-    .pos-1 { top: 0%; }
-    .pos-2 { top: 20%; right: 0%; }
-    .pos-3 { bottom: 20%; right: 0%; }
-    .pos-4 { bottom: 0%; }
-    .pos-5 { bottom: 20%; left: 0%; }
-    .pos-6 { top: 20%; left: 0%; }
+    /* Icônes et Textes agrandis pour lisibilité */
+    .orbit-btn i { font-size: 1.8rem; margin-bottom: 4px; }
+    .orbit-btn span { font-size: 0.75rem; font-weight: 900; letter-spacing: 1px; }
 
-    /* --- MENU INTERNE (MODALS) --- */
+    /* POSITIONNEMENT : Écartement maximal pour remplir l'écran */
+    /* Les valeurs en % ici se réfèrent aux 60svh du container */
+    .pos-1 { top: -10%; }
+    .pos-2 { top: 15%; right: -5%; }
+    .pos-3 { bottom: 15%; right: -5%; }
+    .pos-4 { bottom: -10%; }
+    .pos-5 { bottom: 15%; left: -5%; }
+    .pos-6 { top: 15%; left: -5%; }
+
+    /* --- ADAPTATION ÉCRANS ÉTROITS (Petits Mobiles) --- */
+    @media (max-width: 380px) {
+        .orbit-btn { width: 85px; height: 85px; }
+        .orbit-btn i { font-size: 1.5rem; }
+        .orbital-container { height: 70svh; } /* On utilise encore plus de hauteur */
+    }
+
+    /* --- MODALS (Correction contenu excentré) --- */
+    .modal-content {
+        background: var(--modal-card); 
+        width: 85%; 
+        max-width: 400px;
+        padding: 25px; 
+        border-radius: 25px; 
+        border: 1px solid var(--gold);
+        position: relative;
+        display: flex; flex-direction: column; align-items: center; /* Force le centrage */
+    }
+
     .circle-menu-container {
         position: relative;
         width: 280px; height: 280px;
-        margin: 20px auto;
         display: flex; justify-content: center; align-items: center;
-    }
-
-    .center-icon-deco {
-        font-size: 3rem; color: var(--gold); opacity: 0.15;
     }
 
     .circle-item {
         position: absolute;
-        width: 80px; height: 80px; /* Taille fixe pour éviter l'excentrage du contenu */
-        background: rgba(20, 20, 20, 0.95);
-        border: 1px solid var(--gold);
-        border-radius: 50%;
-        display: flex; flex-direction: column;
-        justify-content: center; align-items: center;
+        width: 75px; height: 75px;
+        background: #111; border: 1px solid var(--gold); border-radius: 50%;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
         text-decoration: none; color: white;
-        z-index: 10;
-        transition: all 0.3s ease;
     }
     
-    /* Positionnement par translation pure par rapport au centre du parent */
-    .cp-1 { transform: translateY(-100px); }
-    .cp-2 { transform: translate(87px, -50px); }
-    .cp-3 { transform: translate(87px, 50px); }
-    .cp-4 { transform: translateY(100px); }
-    .cp-5 { transform: translate(-87px, 50px); }
-    .cp-6 { transform: translate(-87px, -50px); }
-
-    .circle-item i { font-size: 1.5rem; color: var(--gold); margin-bottom: 4px; }
-    .circle-item span { font-size: 0.6rem; font-weight: bold; }
-
-    /* --- STRUCTURE MODAL --- */
-    .modal {
-        display: none; position: fixed; z-index: 1000;
-        left: 0; top: 0; width: 100%; height: 100%;
-        background: var(--modal-bg); backdrop-filter: blur(15px);
-        justify-content: center; align-items: center;
-    }
-    .modal.active { display: flex; opacity: 1; }
-    .modal-content {
-        background: var(--modal-card); width: 90%; max-width: 380px;
-        padding: 30px 10px; border-radius: 20px; border: 1px solid var(--gold-glow);
-        position: relative; text-align: center;
-    }
-    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: var(--gold); cursor: pointer; }
-    .modal-title { color: var(--gold); font-size: 1.3rem; margin-bottom: 20px; }
-</style> </head>
+    /* Coordonnées fixes pour éviter que l'icône ne bouge dans la bulle */
+    .cp-1 { transform: translateY(-105px); }
+    .cp-2 { transform: translate(91px, -52px); }
+    .cp-3 { transform: translate(91px, 52px); }
+    .cp-4 { transform: translateY(105px); }
+    .cp-5 { transform: translate(-91px, 52px); }
+    .cp-6 { transform: translate(-91px, -52px); }
+</style>
+</head>
 <body>
 
     <div class="bokeh"></div>
@@ -289,6 +281,7 @@ window.onclick = function(e) {
 } </script>
 </body>
 </html>
+
 
 
 
