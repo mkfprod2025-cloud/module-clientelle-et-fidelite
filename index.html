@@ -129,16 +129,14 @@
         .modal-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1.5px; }
         .modal-text { font-size: 0.95rem; line-height: 1.5; color: #ddd; margin-bottom: 20px; }
         .modal-image { width: 100%; border-radius: 12px; margin-bottom: 15px; height: 180px; object-fit: cover; }
-        
-/* --- CONTAINER DU SOUS-MENU (Cercle Fixe) --- */
+/* --- CONTAINER DU SOUS-MENU --- */
 .circle-menu-container {
     position: relative;
     width: 280px; height: 280px;
     margin: 10px auto;
-    border-radius: 50%;
 }
 
-/* --- LES BOUTONS DU SOUS-MENU --- */
+/* --- LES BOUTONS (FIXES) --- */
 .circle-item {
     position: absolute;
     width: 70px; height: 70px;
@@ -148,38 +146,39 @@
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     text-decoration: none; color: white;
-    transition: transform 0.2s ease; /* Animation fluide au clic/survol */
     
-    /* On centre tout par défaut pour utiliser translate ensuite */
+    /* Positionnement de base au centre */
     top: 50%; left: 50%;
-    margin-top: -35px; margin-left: -35px; 
+    margin-top: -35px; margin-left: -35px;
+    
+    /* On utilise les variables pour le placement */
+    transform: translate(var(--x), var(--y));
+    transition: all 0.3s ease;
 }
 
 .circle-item i { font-size: 1.5rem; color: #d4af37; margin-bottom: 4px; }
 .circle-item span { font-size: 0.55rem; text-transform: uppercase; }
 
-/* Effet simple au survol (Grossissement) */
+/* Effet au survol : On garde la position (x,y) ET on ajoute le scale */
 .circle-item:hover {
-    transform: scale(1.15); 
-    background: rgba(212, 175, 55, 0.15);
+    transform: translate(var(--x), var(--y)) scale(1.15);
     border-color: #d4af37;
+    background: rgba(212, 175, 55, 0.1);
     z-index: 10;
 }
 
-/* --- POSITIONS FIXES (Coordonnées mathématiques) --- */
-/* cp-1 = Haut, cp-2 = Haut-Droite, etc. */
-.cp-1 { transform: translate(0, -105px); }      
-.cp-2 { transform: translate(91px, -52px); }    
-.cp-3 { transform: translate(91px, 52px); }     
-.cp-4 { transform: translate(0, 105px); }       
-.cp-5 { transform: translate(-91px, 52px); }    
-.cp-6 { transform: translate(-91px, -52px); }   
+/* --- COORDONNÉES DES 6 POSITIONS --- */
+.cp-1 { --x: 0px;   --y: -105px; }
+.cp-2 { --x: 91px;  --y: -52px;  }
+.cp-3 { --x: 91px;  --y: 52px;   }
+.cp-4 { --x: 0px;   --y: 105px;  }
+.cp-5 { --x: -91px; --y: 52px;   }
+.cp-6 { --x: -91px; --y: -52px;  }
 
-/* Décoration au centre (icône fantôme) */
 .center-icon-deco {
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2.5rem; color: #d4af37; opacity: 0.3;
+    font-size: 2.5rem; color: #d4af37; opacity: 0.2;
 }
         /* Vidéo */
         .video-box { width: 100%; aspect-ratio: 16/9; background: black; border-radius: 10px; overflow: hidden; }
@@ -277,7 +276,6 @@
             <p class="modal-text">Vous avez passé un bon moment ?<br>Dites-le nous sur Google !</p>
             <a href="#" class="action-btn"><i class="fa-brands fa-google"></i> Noter maintenant</a>
         </div>
-    </div>
 </div>
 <div id="modal-social" class="modal">
     <div class="modal-content">
@@ -370,6 +368,7 @@
     </script>
 </body>
 </html>
+
 
 
 
