@@ -131,7 +131,8 @@
 /* --- LES BOUTONS (FIXES) --- */
 .circle-item {
     position: absolute;
-    top: 0; left: 0; /* Verrouillage de l'origine pour le calcul transform */
+   top: 50%; left: 50%; /* On revient au centre mort du parent */
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
     width: 70px; height: 70px;
     background: rgba(30, 30, 30, 0.9);
     border: 1px solid rgba(212, 175, 55, 0.3);
@@ -147,8 +148,9 @@ will-change: transform;
     transform: translate(calc(105px + var(--x)), calc(105px + var(--y)));
 }
 .circle-item:hover {
-    transform: translate(calc(105px + var(--x)), calc(105px + var(--y))) scale(1.1);
-    filter: brightness(1.3);
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.1);
+}
+        filter: brightness(1.3);
     border-color: var(--gold);
     background: rgba(212, 175, 55, 0.15);
 }
@@ -159,14 +161,23 @@ will-change: transform;
     filter: brightness(1.4);
     border-color: var(--gold);
 }
-/* --- COORDONNÉES DES 6 POSITIONS --- */
-.cp-1 { --x: 0px;   --y: -105px; }
-.cp-2 { --x: 91px;  --y: -52px;  }
-.cp-3 { --x: 91px;  --y: 52px;   }
-.cp-4 { --x: 0px;   --y: 105px;  }
-.cp-5 { --x: -91px; --y: 52px;   }
-.cp-6 { --x: -91px; --y: -52px;  }
+/* Coordonnées calculées en unités de viewport (vw) pour flexibilité totale */
+.cp-1 { --x: 0vw;      --y: -33.75vw; }
+.cp-2 { --x: 29.25vw;  --y: -16.71vw; }
+.cp-3 { --x: 29.25vw;  --y: 16.71vw;  }
+.cp-4 { --x: 0vw;      --y: 33.75vw;  }
+.cp-5 { --x: -29.25vw; --y: 16.71vw;  }
+.cp-6 { --x: -29.25vw; --y: -16.71vw; }
 
+/* Note : Sur Desktop, on plafonne via une Media Query */
+@media (min-width: 420px) {
+    .cp-1 { --x: 0px;    --y: -105px; }
+    .cp-2 { --x: 91px;   --y: -52px;  }
+    .cp-3 { --x: 91px;   --y: 52px;   }
+    .cp-4 { --x: 0px;    --y: 105px;  }
+    .cp-5 { --x: -91px;  --y: 52px;   }
+    .cp-6 { --x: -91px;  --y: -52px;  }
+}
 .center-icon-deco {
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
@@ -346,6 +357,7 @@ window.onclick = function(e) {
 } </script>
 </body>
 </html>
+
 
 
 
