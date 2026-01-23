@@ -131,29 +131,65 @@
         .modal-image { width: 100%; border-radius: 12px; margin-bottom: 15px; height: 180px; object-fit: cover; }
         
         /* --- Styles Spécifiques aux Grilles (Social & Services) --- */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-            gap: 15px;
-            padding: 10px 0;
-        }
-        
-        .grid-item {
-            display: flex; flex-direction: column; align-items: center;
-            text-decoration: none; color: white;
-            padding: 10px; border-radius: 10px;
-            transition: background 0.2s;
-        }
-        .grid-item:hover { background: rgba(255,255,255,0.05); }
-        
-        /* Correction icônes sociales : Force la couleur OR et la taille */
-        .grid-item i { 
-            font-size: 2.2rem; 
-            margin-bottom: 8px; 
-            color: var(--gold); 
-        }
-        .grid-item span { font-size: 0.7rem; font-weight: 300; }
+   /* --- Nouveau Menu Orbital Social --- */
+.social-orbital {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+/* Les icônes sociales positionnées en cercle */
+.social-item-orbital {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-item-orbital i { 
+    font-size: 1.8rem; 
+    color: var(--gold); 
+}
+
+.social-item-orbital span { 
+    font-size: 0.5rem; 
+    color: white; 
+    text-transform: uppercase; 
+    margin-top: 4px;
+}
+
+.social-item-orbital:hover {
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 15px var(--gold-glow);
+    transform: scale(1.1);
+}
+
+/* Calcul des positions circulaires (Rayon de 100px) */
+.s-1 { transform: translate(0, -100px); }    /* Haut */
+.s-2 { transform: translate(87px, -50px); }  /* Haut-Droite */
+.s-3 { transform: translate(87px, 50px); }   /* Bas-Droite */
+.s-4 { transform: translate(0, 100px); }     /* Bas */
+.s-5 { transform: translate(-87px, 50px); }  /* Bas-Gauche */
+.s-6 { transform: translate(-87px, -50px); } /* Haut-Gauche */
+
+/* Icône centrale décorative */
+.social-center-icon {
+    font-size: 2.5rem;
+    color: var(--gold);
+    opacity: 0.5;
+}
         /* Vidéo */
         .video-box { width: 100%; aspect-ratio: 16/9; background: black; border-radius: 10px; overflow: hidden; }
         
@@ -339,3 +375,4 @@
     </script>
 </body>
 </html>
+
