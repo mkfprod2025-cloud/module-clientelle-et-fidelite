@@ -120,11 +120,22 @@
             opacity: 0; transition: opacity 0.3s ease;
         }
         .modal.active { display: flex; opacity: 1; }
-        .modal-content {
-            background: var(--modal-card); width: 90%; max-width: 400px;
-            padding: 35px 15px; border-radius: 25px; border: 1px solid var(--gold);
-            position: relative; color: white; text-align: center;
-        }
+  .modal-content {
+    background: var(--modal-card);
+    width: 95vw; /* Occupe 95% de la largeur écran */
+    height: 80vh; /* Occupe 80% de la hauteur écran */
+    max-width: none; 
+    padding: 20px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--gold);
+    position: relative;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
         .modal-image { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; color: var(--gold); cursor: pointer; }
         .modal-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 20px; text-transform: uppercase; }
@@ -191,5 +202,6 @@
     </script>
 </body>
 </html>
+
 
 
