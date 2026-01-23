@@ -327,8 +327,12 @@ will-change: transform;
 }
 function closeModal(id) {
     const m = document.getElementById(id);
-    if(m) m.classList.remove('active');
-}
+    if(m) { m.classList.remove('active');
+
+    if(id === 'modal-video') {
+            document.getElementById('video-container').innerHTML = '';
+       } 
+    }
         // Gestion Vidéo (Rickroll gardé pour le test !)
         function handleZoneZero() {
             const container = document.getElementById('video-container');
@@ -346,13 +350,5 @@ function closeModal(id) {
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
 
 
