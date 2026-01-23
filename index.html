@@ -128,10 +128,10 @@
     width: 280px; height: 280px;
     margin: 10px auto;
 }
-
 /* --- LES BOUTONS (FIXES) --- */
 .circle-item {
     position: absolute;
+    top: 0; left: 0; /* Verrouillage de l'origine pour le calcul transform */
     width: 70px; height: 70px;
     background: rgba(30, 30, 30, 0.9);
     border: 1px solid rgba(212, 175, 55, 0.3);
@@ -346,6 +346,7 @@ function closeModal(id) {
     </script>
 </body>
 </html>
+
 
 
 
