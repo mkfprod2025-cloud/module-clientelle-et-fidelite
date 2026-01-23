@@ -326,31 +326,14 @@
     </div>
 
     <script>
-        // Fonction d'ouverture
-        function openModal(id) {
-            const m = document.getElementById(id);
-            if(m) {
-                m.style.display = 'flex';
-                // Petit délai pour permettre la transition CSS
-                setTimeout(() => m.classList.add('active'), 10);
-            }
-        }
-
-        // Fonction de fermeture
-        function closeModal(id) {
-            const m = document.getElementById(id);
-            if(m) {
-                m.classList.remove('active');
-                setTimeout(() => {
-                    m.style.display = 'none';
-                    // Arrêt de la vidéo si c'est le modal vidéo
-                    if(id === 'modal-video') {
-                        document.getElementById('video-container').innerHTML = '';
-                    }
-                }, 300); // Correspond à la durée de transition CSS
-            }
-        }
-
+     function openModal(id) {
+    const m = document.getElementById(id);
+    if(m) m.classList.add('active');
+}
+function closeModal(id) {
+    const m = document.getElementById(id);
+    if(m) m.classList.remove('active');
+}
         // Gestion Vidéo (Rickroll gardé pour le test !)
         function handleZoneZero() {
             const container = document.getElementById('video-container');
@@ -368,6 +351,7 @@
     </script>
 </body>
 </html>
+
 
 
 
