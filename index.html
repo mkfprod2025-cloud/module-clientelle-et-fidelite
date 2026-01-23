@@ -5,293 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hub Orbital - Final Version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-        --gold: #d4af37;
-        --gold-glow: rgba(212, 175, 55, 0.4);
-        --bg-dark: #050505;
-        --ring-color: rgba(212, 175, 55, 0.15);
-        --modal-bg: rgba(0, 0, 0, 0.96);
-        --modal-card: #121212;
-    }
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --bg-dark: #050505;
+            --ring-color: rgba(212, 175, 55, 0.15);
+            --modal-bg: rgba(0, 0, 0, 0.96);
+            --modal-card: #121212;
+        }
 
-    /* --- Base --- */
-    body, html {
-        margin: 0; padding: 0; width: 100%; height: 100%;
-        background: var(--bg-dark); color: var(--gold);
-        font-family: 'Inter', sans-serif;
-        display: flex; justify-content: center; align-items: center;
-        overflow: hidden; touch-action: none;
-    }
+        /* --- Base --- */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; touch-action: none;
+        }
 
-    .bokeh {
-        position: absolute; width: 100%; height: 100%;
-        background: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
-        z-index: -1;
-    }
+        .bokeh {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
 
-    /* --- BULLES (MENU PRINCIPAL) --- */
-    .orbital-container {
-        position: relative;
-        width: 90vw; height: 90vw;
-        max-width: 400px; max-height: 400px;
-        display: flex; justify-content: center; align-items: center;
-    }
+        /* --- BULLES (MENU PRINCIPAL) - ADAPTATION MOBILE --- */
+        .orbital-container {
+            position: relative;
+            width: 95vw; height: 95vw; /* Remplit la largeur */
+            max-width: 85vh; max-height: 85vh; /* Remplit la hauteur sans déborder */
+            display: flex; justify-content: center; align-items: center;
+        }
 
-    .main-ring {
-        position: absolute; width: 75%; height: 75%;
-        border: 1px solid var(--ring-color); border-radius: 50%;
-    }
+        .main-ring {
+            position: absolute; width: 75%; height: 75%;
+            border: 1px solid var(--ring-color); border-radius: 50%;
+        }
 
-    .center-core {
-        width: 35%; height: 35%; border-radius: 50%;
-        border: 2px solid var(--gold); overflow: hidden;
-        z-index: 10; cursor: pointer;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .center-core img { width: 100%; height: 100%; object-fit: cover; }
+        /* LOGO : Agrandi pour empiètement et placé en dessous (z-index 1) */
+        .center-core {
+            position: absolute;
+            width: 55%; height: 55%; border-radius: 50%;
+            border: 2px solid var(--gold); overflow: hidden;
+            z-index: 1; cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #000;
+        }
+        .center-core img { width: 100%; height: 100%; object-fit: cover; }
 
-    .orbit-btn {
-        position: absolute; width: 26%; height: 26%;
-        background: rgba(15, 15, 15, 0.95);
-        border: 1px solid rgba(212, 175, 55, 0.4);
-        border-radius: 50%; display: flex; flex-direction: column;
-        justify-content: center; align-items: center;
-        color: var(--gold); backdrop-filter: blur(8px); z-index: 5;
-        cursor: pointer; transition: all 0.3s ease;
-    }
-    .orbit-btn i { font-size: 1.2rem; margin-bottom: 4px; }
-    .orbit-btn span { font-size: 0.6rem; text-transform: uppercase; font-weight: 700; }
+        /* BOUTONS : Agrandis pour aspect "Rempli" (z-index 10) */
+        .orbit-btn {
+            position: absolute; width: 30%; height: 30%;
+            background: rgba(15, 15, 15, 0.95);
+            border: 1px solid var(--gold);
+            border-radius: 50%; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            color: var(--gold); backdrop-filter: blur(8px); z-index: 10;
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        .orbit-btn i { font-size: 1.5rem; margin-bottom: 4px; }
+        .orbit-btn span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
 
-    /* Positions relatives pour mobile */
-    .pos-1 { top: -2%; } .pos-2 { top: 18%; right: -2%; }
-    .pos-3 { bottom: 18%; right: -2%; } .pos-4 { bottom: -2%; }
-    .pos-5 { bottom: 18%; left: -2%; } .pos-6 { top: 18%; left: -2%; }
+        /* Positions optimisées pour l'empiètement visuel */
+        .pos-1 { top: -5%; } .pos-2 { top: 18%; right: -5%; }
+        .pos-3 { bottom: 18%; right: -5%; } .pos-4 { bottom: -5%; }
+        .pos-5 { bottom: 18%; left: -5%; } .pos-6 { top: 18%; left: -5%; }
 
-    /* --- BOUTONS (MENU INTERNE MODAL) --- */
-    .circle-menu-container {
-        position: relative;
-        width: 75vw; height: 75vw; /* S'adapte à la largeur mobile */
-        max-width: 280px; max-height: 280px;
-        margin: 20px auto;
-    }
+        /* --- BOUTONS INTERNES (MODAL) - RECENTRAGE PHOTOS/ICONES --- */
+        .circle-menu-container {
+            position: relative;
+            width: 280px; height: 280px;
+            margin: 20px auto;
+            display: flex; justify-content: center; align-items: center;
+        }
 
-    .circle-item {
-        position: absolute;
-        top: 50%; left: 50%; /* Centre exact */
-        width: 25%; height: 25%; /* Proportionnel au parent */
-        background: rgba(30, 30, 30, 0.9);
-        border: 1px solid rgba(212, 175, 55, 0.3);
-        border-radius: 50%; display: flex; flex-direction: column;
-        justify-content: center; align-items: center;
-        text-decoration: none; color: white;
-        /* Le secret : on translate par rapport au centre propre (-50%) + la variable */
-        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
-        transition: all 0.3s ease;
-    }
+        .circle-item {
+            position: absolute;
+            width: 80px; height: 80px;
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid var(--gold);
+            border-radius: 50%; 
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-decoration: none; color: white;
+            transition: all 0.3s ease;
+            /* Utilisation du translate pur pour ne pas excentrer le contenu */
+            transform: translate(var(--x), var(--y));
+        }
 
-    /* Coordonnées en % pour ne jamais déborder */
-    .cp-1 { --x: 0%;    --y: -140%; }
-    .cp-2 { --x: 120%;  --y: -70%; }
-    .cp-3 { --x: 120%;  --y: 70%; }
-    .cp-4 { --x: 0%;    --y: 140%; }
-    .cp-5 { --x: -120%; --y: 70%; }
-    .cp-6 { --x: -120%; --y: -70%; }
+        /* Coordonnées fixes basées sur le centre 0,0 */
+        .cp-1 { --x: 0px;    --y: -110px; }
+        .cp-2 { --x: 95px;   --y: -55px;  }
+        .cp-3 { --x: 95px;   --y: 55px;   }
+        .cp-4 { --x: 0px;    --y: 110px;  }
+        .cp-5 { --x: -95px;  --y: 55px;   }
+        .cp-6 { --x: -95px;  --y: -55px;  }
 
-    .circle-item:hover { filter: brightness(1.4); border-color: var(--gold); transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.1); }
-    .circle-item i { font-size: 1.2rem; color: #d4af37; margin-bottom: 3px; }
-    .circle-item span { font-size: 0.5rem; text-transform: uppercase; }
+        .circle-item:hover { transform: translate(var(--x), var(--y)) scale(1.1); filter: brightness(1.2); }
+        .circle-item i { font-size: 1.4rem; color: var(--gold); margin-bottom: 4px; }
+        .circle-item span { font-size: 0.6rem; text-transform: uppercase; font-weight: bold; }
 
-    .center-icon-deco {
-        position: absolute; top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 2rem; color: #d4af37; opacity: 0.2;
-    }
+        .center-icon-deco {
+            position: absolute; font-size: 2.5rem; color: #d4af37; opacity: 0.15;
+        }
 
-    /* --- Modals --- */
-    .modal {
-        display: none; position: fixed; z-index: 1000;
-        left: 0; top: 0; width: 100%; height: 100%;
-        background: var(--modal-bg); backdrop-filter: blur(15px);
-        justify-content: center; align-items: center;
-        opacity: 0; transition: opacity 0.3s ease;
-    }
-    .modal.active { display: flex; opacity: 1; }
-    .modal-content {
-        background: var(--modal-card); width: 88%; max-width: 380px;
-        padding: 30px 15px; border-radius: 20px; border: 1px solid var(--gold-glow);
-        position: relative; color: white; text-align: center;
-    }
-    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; color: var(--gold); cursor: pointer; }
-    .modal-title { color: var(--gold); font-size: 1.2rem; margin-bottom: 15px; text-transform: uppercase; }
-    .video-box { width: 100%; aspect-ratio: 16/9; background: black; border-radius: 10px; overflow: hidden; }
-</style>
-  </head>
+        /* --- Modals --- */
+        .modal {
+            display: none; position: fixed; z-index: 1000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: var(--modal-bg); backdrop-filter: blur(15px);
+            justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: var(--modal-card); width: 90%; max-width: 400px;
+            padding: 35px 15px; border-radius: 25px; border: 1px solid var(--gold);
+            position: relative; color: white; text-align: center;
+        }
+        .modal-image { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; color: var(--gold); cursor: pointer; }
+        .modal-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 20px; text-transform: uppercase; }
+        .action-btn { display: inline-block; background: var(--gold); color: black; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
 <body>
 
     <div class="bokeh"></div>
 
     <div class="orbital-container">
         <div class="main-ring"></div>
-
         <div class="center-core" id="zone-zero" onclick="handleZoneZero()">
-            <img src="https://via.placeholder.com/200/d4af37/000000?text=LOGO" alt="Logo Restaurant">
+            <img src="https://via.placeholder.com/300/d4af37/000000?text=LOGO" alt="Logo Restaurant">
         </div>
 
-        <div class="orbit-btn pos-1" onclick="openModal('modal-plat')">
-            <i class="fa-solid fa-utensils"></i>
-            <span>Plat</span>
-        </div>
-
-        <div class="orbit-btn pos-2" onclick="openModal('modal-menu')">
-            <i class="fa-solid fa-book-open"></i>
-            <span>Carte</span>
-        </div>
-
-        <div class="orbit-btn pos-3" onclick="openModal('modal-avis')">
-            <i class="fa-solid fa-star"></i>
-            <span>Avis</span>
-        </div>
-
-        <div class="orbit-btn pos-4" onclick="openModal('modal-social')">
-            <i class="fa-solid fa-hashtag"></i>
-            <span>Suivre</span>
-        </div>
-
-        <div class="orbit-btn pos-5" onclick="openModal('modal-plus')">
-            <i class="fa-solid fa-plus"></i>
-            <span>Hub</span>
-        </div>
-
-        <div class="orbit-btn pos-6" onclick="openModal('modal-wifi')">
-            <i class="fa-solid fa-wifi"></i>
-            <span>Wi-Fi</span>
-        </div>
+        <div class="orbit-btn pos-1" onclick="openModal('modal-plat')"><i class="fa-solid fa-utensils"></i><span>Plat</span></div>
+        <div class="orbit-btn pos-2" onclick="openModal('modal-menu')"><i class="fa-solid fa-book-open"></i><span>Carte</span></div>
+        <div class="orbit-btn pos-3" onclick="openModal('modal-avis')"><i class="fa-solid fa-star"></i><span>Avis</span></div>
+        <div class="orbit-btn pos-4" onclick="openModal('modal-social')"><i class="fa-solid fa-hashtag"></i><span>Suivre</span></div>
+        <div class="orbit-btn pos-5" onclick="openModal('modal-plus')"><i class="fa-solid fa-plus"></i><span>Hub</span></div>
+        <div class="orbit-btn pos-6" onclick="openModal('modal-wifi')"><i class="fa-solid fa-wifi"></i><span>Wi-Fi</span></div>
     </div>
 
-    <div id="modal-video" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modal-video')">&times;</span>
-            <div class="video-box" id="video-container"></div>
-            <p style="margin-top:15px; color:#aaa;">Immersion au cœur du restaurant.</p>
-        </div>
-    </div>
-
-    <div id="modal-plat" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modal-plat')">&times;</span>
-            <h2 class="modal-title">Suggestion</h2>
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500" class="modal-image" alt="Plat">
-            <h3>Souris d'Agneau Confite</h3>
-            <p class="modal-text">Cuisson de 7 heures au thym frais, accompagnée de sa purée maison.</p>
-            <span style="color:var(--gold); font-size:1.2rem; font-weight:bold;">24€</span>
-        </div>
-    </div>
-
-    <div id="modal-menu" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modal-menu')">&times;</span>
-            <h2 class="modal-title">La Carte</h2>
-            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=500" class="modal-image" alt="Menu">
-            <p class="modal-text">Découvrez nos entrées, plats et desserts faits maison.</p>
-            <a href="#" class="action-btn">Voir le PDF</a>
-        </div>
-    </div>
-
-    <div id="modal-avis" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modal-avis')">&times;</span>
-            <h2 class="modal-title">Votre Avis Compte</h2>
-            <div style="margin: 20px 0;">
-                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
-                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
-                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
-                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
-                <i class="fa-solid fa-star" style="color:var(--gold); font-size:2.5rem;"></i>
-            </div>
-            <p class="modal-text">Vous avez passé un bon moment ?<br>Dites-le nous sur Google !</p>
-            <a href="#" class="action-btn"><i class="fa-brands fa-google"></i> Noter maintenant</a>
-        </div>
-</div>
-<div id="modal-social" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('modal-social')">&times;</span>
-        <h2 class="modal-title">Communauté</h2>
-        
-        <div class="circle-menu-container">
-            <i class="fa-solid fa-share-nodes center-icon-deco"></i>
-
-            <a href="#" class="circle-item cp-1"><i class="fa-brands fa-instagram"></i><span>Insta</span></a>
-            <a href="#" class="circle-item cp-2"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a>
-            <a href="#" class="circle-item cp-3"><i class="fa-brands fa-facebook"></i><span>Fb</span></a>
-            <a href="#" class="circle-item cp-4"><i class="fa-brands fa-whatsapp"></i><span>What</span></a>
-            <a href="#" class="circle-item cp-5"><i class="fa-brands fa-snapchat"></i><span>Snap</span></a>
-            <a href="#" class="circle-item cp-6"><i class="fa-brands fa-x-twitter"></i><span>X</span></a>
-        </div>
-    </div>
-</div>
-<div id="modal-plus" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('modal-plus')">&times;</span>
-        <h2 class="modal-title">Services</h2>
-
-        <div class="circle-menu-container">
-            <i class="fa-solid fa-bell-concierge center-icon-deco"></i>
-            
-            <a href="#" class="circle-item cp-1"><i class="fa-brands fa-uber"></i><span>Uber</span></a>
-            <a href="#" class="circle-item cp-2"><i class="fa-solid fa-calendar-check"></i><span>Book</span></a>
-            <a href="#" class="circle-item cp-3"><i class="fa-solid fa-gifts"></i><span>Promo</span></a>
-            <a href="#" class="circle-item cp-4"><i class="fa-brands fa-tripadvisor"></i><span>Trip</span></a>
-            <a href="#" class="circle-item cp-5"><i class="fa-solid fa-utensils"></i><span>Fork</span></a>
-            <a href="#" class="circle-item cp-6"><i class="fa-solid fa-envelope"></i><span>Mail</span></a>
-        </div>
-    </div>
-</div>
-    <div id="modal-wifi" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modal-wifi')">&times;</span>
-            <h2 class="modal-title">Accès Wi-Fi</h2>
-            <i class="fa-solid fa-wifi" style="font-size:3rem; color:var(--gold); margin-bottom:20px;"></i>
-            <p class="modal-text">Réseau : <strong>LeBistrot_Guest</strong></p>
-            <p class="modal-text">Mot de passe :</p>
-            <div style="background:#222; padding:10px; border-radius:8px; border:1px dashed var(--gold); display:inline-block; margin-bottom:15px;">
-                <strong style="color:white; font-size:1.2rem; letter-spacing:1px;">GOURMET2024</strong>
-            </div>
-            <p style="font-size:0.8rem; color:#888;">Scannez le QR Code sur la table pour une connexion directe.</p>
-        </div>
-    </div>
+    <div id="modal-social" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-social')">&times;</span><h2 class="modal-title">Communauté</h2><div class="circle-menu-container"><i class="fa-solid fa-share-nodes center-icon-deco"></i><a href="#" class="circle-item cp-1"><i class="fa-brands fa-instagram"></i><span>Insta</span></a><a href="#" class="circle-item cp-2"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a><a href="#" class="circle-item cp-3"><i class="fa-brands fa-facebook"></i><span>Fb</span></a><a href="#" class="circle-item cp-4"><i class="fa-brands fa-whatsapp"></i><span>What</span></a><a href="#" class="circle-item cp-5"><i class="fa-brands fa-snapchat"></i><span>Snap</span></a><a href="#" class="circle-item cp-6"><i class="fa-brands fa-x-twitter"></i><span>X</span></a></div></div></div>
+    <div id="modal-plus" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-plus')">&times;</span><h2 class="modal-title">Services</h2><div class="circle-menu-container"><i class="fa-solid fa-bell-concierge center-icon-deco"></i><a href="#" class="circle-item cp-1"><i class="fa-brands fa-uber"></i><span>Uber</span></a><a href="#" class="circle-item cp-2"><i class="fa-solid fa-calendar-check"></i><span>Book</span></a><a href="#" class="circle-item cp-3"><i class="fa-solid fa-gifts"></i><span>Promo</span></a><a href="#" class="circle-item cp-4"><i class="fa-brands fa-tripadvisor"></i><span>Trip</span></a><a href="#" class="circle-item cp-5"><i class="fa-solid fa-utensils"></i><span>Fork</span></a><a href="#" class="circle-item cp-6"><i class="fa-solid fa-envelope"></i><span>Mail</span></a></div></div></div>
+    
+    <div id="modal-plat" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-plat')">&times;</span><h2 class="modal-title">Suggestion</h2><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500" class="modal-image"><h3>Souris d'Agneau</h3><p>Cuisson 7h au thym.</p></div></div>
+    <div id="modal-video" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-video')">&times;</span><div class="video-box" id="video-container"></div></div></div>
 
     <script>
-function openModal(id) {
-    const m = document.getElementById(id);
-    if(m) m.classList.add('active');
-}
-
-function closeModal(id) {
-    const m = document.getElementById(id);
-    if(m) {
-        m.classList.remove('active');
-        if(id === 'modal-video') {
-            document.getElementById('video-container').innerHTML = '';
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { 
+            document.getElementById(id).classList.remove('active'); 
+            if(id === 'modal-video') document.getElementById('video-container').innerHTML = '';
         }
-    }
-}
-
-function handleZoneZero() {
-    const container = document.getElementById('video-container');
-    container.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    openModal('modal-video');
-}
-
-window.onclick = function(e) {
-    if (e.target.classList.contains('modal')) {
-        closeModal(e.target.id);
-    }
-} </script>
+        function handleZoneZero() {
+            document.getElementById('video-container').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+            openModal('modal-video');
+        }
+        window.onclick = function(e) { if (e.target.classList.contains('modal')) closeModal(e.target.id); }
+    </script>
 </body>
 </html>
-
-
-
-
