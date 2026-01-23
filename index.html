@@ -76,13 +76,10 @@
     .pos-4 { bottom: -4%; } 
     .pos-5 { bottom: 18%; left: -4%; } 
     .pos-6 { top: 18%; left: -4%; }
-        /* --- BOUTONS INTERNES (MODAL) - RECENTRAGE PHOTOS/ICONES --- */
-.circle-menu-container {
+        .circle-menu-container {
     position: relative;
-    width: 90vw; /* Adapté à la nouvelle largeur de modale */
-    height: 90vw;
-    max-width: 350px; 
-    max-height: 350px;
+    width: 100%; /* Utilise toute la largeur de modal-content */
+    height: 70vh; /* Utilise la majorité de la hauteur de modal-content */
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -102,14 +99,13 @@
     text-decoration: none; color: white;
     transition: all 0.3s ease;
     transform: translate(var(--x), var(--y));
-    z-index: 2;
-}
-.cp-1 { --x: 0%;    --y: -100%; }
-.cp-2 { --x: 85%;   --y: -50%;  }
-.cp-3 { --x: 85%;   --y: 50%;   }
-.cp-4 { --x: 0%;    --y: 100%;  }
-.cp-5 { --x: -85%;  --y: 50%;   }
-.cp-6 { --x: -85%;  --y: -50%;  }
+    z-index: 2;}
+.cp-1 { --x: 0%;    --y: -140%; }
+.cp-2 { --x: 130%;  --y: -70%;  }
+.cp-3 { --x: 130%;  --y: 70%;   }
+.cp-4 { --x: 0%;    --y: 140%;  }
+.cp-5 { --x: -130%; --y: 70%;   }
+.cp-6 { --x: -130%; --y: -70%;  }
         .circle-item:hover { transform: translate(var(--x), var(--y)) scale(1.1); filter: brightness(1.2); }
       
         .center-icon-deco {
@@ -208,6 +204,7 @@
     </script>
 </body>
 </html>
+
 
 
 
