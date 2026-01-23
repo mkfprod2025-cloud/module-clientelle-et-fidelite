@@ -83,21 +83,19 @@
             margin: 20px auto;
             display: flex; justify-content: center; align-items: center;
         }
-
-        .circle-item {
-            position: absolute;
-            width: 80px; height: 80px;
-            background: rgba(30, 30, 30, 0.95);
-            border: 1px solid var(--gold);
-            border-radius: 50%; 
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-decoration: none; color: white;
-            transition: all 0.3s ease;
-            /* Utilisation du translate pur pour ne pas excentrer le contenu */
-            transform: translate(var(--x), var(--y));
-        }
-
+.circle-item {
+    position: absolute;
+    width: 100px; /* Augmenté de 80px à 100px */
+    height: 100px; /* Augmenté de 80px à 100px */
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid var(--gold);
+    border-radius: 50%; 
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-decoration: none; color: white;
+    transition: all 0.3s ease;
+    transform: translate(var(--x), var(--y));
+}
         /* Coordonnées fixes basées sur le centre 0,0 */
         .cp-1 { --x: 0px;    --y: -110px; }
         .cp-2 { --x: 95px;   --y: -55px;  }
@@ -107,13 +105,12 @@
         .cp-6 { --x: -95px;  --y: -55px;  }
 
         .circle-item:hover { transform: translate(var(--x), var(--y)) scale(1.1); filter: brightness(1.2); }
-        .circle-item i { font-size: 1.4rem; color: var(--gold); margin-bottom: 4px; }
-        .circle-item span { font-size: 0.6rem; text-transform: uppercase; font-weight: bold; }
-
+      
         .center-icon-deco {
             position: absolute; font-size: 2.5rem; color: #d4af37; opacity: 0.15;
         }
-
+.circle-item i { font-size: 1.8rem; color: var(--gold); margin-bottom: 4px; }
+.circle-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: bold; }
         /* --- Modals --- */
         .modal {
             display: none; position: fixed; z-index: 1000;
@@ -194,4 +191,5 @@
     </script>
 </body>
 </html>
+
 
