@@ -220,30 +220,33 @@
             openModal('modal-video');
         }
         window.onclick = function(e) { if (e.target.classList.contains('modal')) closeModal(e.target.id); }
-  async function ouvrirPlat() {
-    const url = 'https://raw.githubusercontent.com/mkfprod2025-cloud/module-clientelle-et-fidelite/84511facd887f1e541027a578db98e02d5cbf842/platdujours.json';
+async function ouvrirPlat() {
+    // Ajout d'un timestamp pour éviter le cache de GitHub (mise à jour instantanée)
+    const url = 'https://raw.githubusercontent.com/mkfprod2025-cloud/module-clientelle-et-fidelite/main/platdujours.json?t=' + new Date().getTime();
     
     try {
         const response = await fetch(url);
+        if (!response.ok) throw new Error('Erreur réseau');
+        
         const data = await response.json();
         
-        // Mise à jour des données
         const modal = document.getElementById('modal-plat');
-        modal.querySelector('h3').innerText = data.nom;
-        modal.querySelector('p').innerText = data.description;
-        modal.querySelector('.modal-image').src = data.image;
+        // On vérifie que les éléments existent avant de les remplir
+        if(data.nom) modal.querySelector('h3').innerText = data.nom;
+        if(data.description) modal.querySelector('p').innerText = data.description;
+        if(data.image) modal.querySelector('.modal-image').src = data.image;
         
-        // Affichage de la modal
         modal.classList.add('active');
     } catch (error) {
-        console.error("Erreur :", error);
-        // Secours : ouvre quand même la modal avec le texte par défaut en cas d'erreur réseau
+        console.error("Erreur de récupération JSON:", error);
+        // Ouvre la modal même si le JSON échoue pour ne pas bloquer l'utilisateur
         document.getElementById('modal-plat').classList.add('active');
     }
 }
     </script>
 </body>
 </html>
+
 
 
 
