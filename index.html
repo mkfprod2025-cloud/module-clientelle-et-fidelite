@@ -122,35 +122,40 @@
         .modal-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1.5px; }
         .modal-text { font-size: 0.95rem; line-height: 1.5; color: #ddd; margin-bottom: 20px; }
         .modal-image { width: 100%; border-radius: 12px; margin-bottom: 15px; height: 180px; object-fit: cover; }
-/* --- CONTAINER DU SOUS-MENU --- */
 .circle-menu-container {
     position: relative;
-    width: 280px; height: 280px;
-    margin: 10px auto;
+    width: 80%; /* Utilise 80% de la largeur de la modal */
+    aspect-ratio: 1 / 1; /* Force un carré parfait */
+    margin: 20px auto;
 }
-/* --- LES BOUTONS (FIXES) --- */
+
 .circle-item {
     position: absolute;
-    top: 0; left: 0; /* Verrouillage de l'origine pour le calcul transform */
-    width: 70px; height: 70px;
+    top: 50%; left: 50%; /* Centre absolu */
+    width: 25%; height: 25%; /* Taille proportionnelle au container */
     background: rgba(30, 30, 30, 0.9);
     border: 1px solid rgba(212, 175, 55, 0.3);
     border-radius: 50%;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     text-decoration: none; color: white;
-will-change: transform;
+    will-change: transform;
+    /* On utilise translate(-50%, -50%) pour le centrage propre + les variables dynamiques */
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
-    
-    /* Équation de positionnement orbital pur (Container 280px / Item 70px) */
-    /* Centre (140px) - Rayon Item (35px) = 105px */
-    transform: translate(calc(105px + var(--x)), calc(105px + var(--y)));
 }
+/* --x et --y représentent maintenant le décalage radial par rapport au centre (50%) */
+.cp-1 { --x: 0%;    --y: -150%; }
+.cp-2 { --x: 130%;  --y: -75%;  }
+.cp-3 { --x: 130%;  --y: 75%;   }
+.cp-4 { --x: 0%;    --y: 150%;  }
+.cp-5 { --x: -130%; --y: 75%;   }
+.cp-6 { --x: -130%; --y: -75%;  }
+
 .circle-item:hover {
-    transform: translate(calc(105px + var(--x)), calc(105px + var(--y))) scale(1.1);
-    filter: brightness(1.3);
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.1);
+    filter: brightness(1.4);
     border-color: var(--gold);
-    background: rgba(212, 175, 55, 0.15);
 }
 .circle-item i { font-size: 1.5rem; color: #d4af37; margin-bottom: 4px; }
 .circle-item span { font-size: 0.55rem; text-transform: uppercase; }
@@ -159,14 +164,6 @@ will-change: transform;
     filter: brightness(1.4);
     border-color: var(--gold);
 }
-/* --- COORDONNÉES DES 6 POSITIONS --- */
-.cp-1 { --x: 0px;   --y: -105px; }
-.cp-2 { --x: 91px;  --y: -52px;  }
-.cp-3 { --x: 91px;  --y: 52px;   }
-.cp-4 { --x: 0px;   --y: 105px;  }
-.cp-5 { --x: -91px; --y: 52px;   }
-.cp-6 { --x: -91px; --y: -52px;  }
-
 .center-icon-deco {
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
@@ -346,6 +343,7 @@ window.onclick = function(e) {
 } </script>
 </body>
 </html>
+
 
 
 
