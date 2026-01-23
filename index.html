@@ -153,15 +153,11 @@ will-change: transform;
 }
 .circle-item i { font-size: 1.5rem; color: #d4af37; margin-bottom: 4px; }
 .circle-item span { font-size: 0.55rem; text-transform: uppercase; }
-
-/* Effet au survol : On garde la position (x,y) ET on ajoute le scale */
 .circle-item:hover {
-    transform: translate(var(--x), var(--y)) scale(1.15);
-    border-color: #d4af37;
-    background: rgba(212, 175, 55, 0.1);
-    z-index: 10;
+    transform: translate(calc(105px + var(--x)), calc(105px + var(--y))) scale(1.1);
+    filter: brightness(1.4);
+    border-color: var(--gold);
 }
-
 /* --- COORDONNÉES DES 6 POSITIONS --- */
 .cp-1 { --x: 0px;   --y: -105px; }
 .cp-2 { --x: 91px;  --y: -52px;  }
@@ -350,5 +346,6 @@ function closeModal(id) {
     </script>
 </body>
 </html>
+
 
 
