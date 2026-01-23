@@ -66,14 +66,16 @@
             cursor: pointer; transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
-        .orbit-btn i { font-size: 1.5rem; margin-bottom: 4px; }
-        .orbit-btn span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+        .orbit-btn i { font-size: 1.6rem; margin-bottom: 4px; display: block; }
+        .orbit-btn span { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; }
 
         /* Positions optimisées pour l'empiètement visuel */
-        .pos-1 { top: -5%; } .pos-2 { top: 18%; right: -5%; }
-        .pos-3 { bottom: 18%; right: -5%; } .pos-4 { bottom: -5%; }
-        .pos-5 { bottom: 18%; left: -5%; } .pos-6 { top: 18%; left: -5%; }
-
+      .pos-1 { top: -4%; } 
+    .pos-2 { top: 18%; right: -4%; } 
+    .pos-3 { bottom: 18%; right: -4%; } 
+    .pos-4 { bottom: -4%; } 
+    .pos-5 { bottom: 18%; left: -4%; } 
+    .pos-6 { top: 18%; left: -4%; }
         /* --- BOUTONS INTERNES (MODAL) - RECENTRAGE PHOTOS/ICONES --- */
         .circle-menu-container {
             position: relative;
@@ -135,22 +137,44 @@
 <body>
 
     <div class="bokeh"></div>
-
-    <div class="orbital-container">
-        <div class="main-ring"></div>
-        <div class="center-core" id="zone-zero" onclick="handleZoneZero()">
-            <img src="https://via.placeholder.com/300/d4af37/000000?text=LOGO" alt="Logo Restaurant">
-        </div>
-
-        <div class="orbit-btn pos-1" onclick="openModal('modal-plat')"><i class="fa-solid fa-utensils"></i><span>Plat</span></div>
-        <div class="orbit-btn pos-2" onclick="openModal('modal-menu')"><i class="fa-solid fa-book-open"></i><span>Carte</span></div>
-        <div class="orbit-btn pos-3" onclick="openModal('modal-avis')"><i class="fa-solid fa-star"></i><span>Avis</span></div>
-        <div class="orbit-btn pos-4" onclick="openModal('modal-social')"><i class="fa-solid fa-hashtag"></i><span>Suivre</span></div>
-        <div class="orbit-btn pos-5" onclick="openModal('modal-plus')"><i class="fa-solid fa-plus"></i><span>Hub</span></div>
-        <div class="orbit-btn pos-6" onclick="openModal('modal-wifi')"><i class="fa-solid fa-wifi"></i><span>Wi-Fi</span></div>
+<div class="orbital-container">
+    <div class="main-ring"></div>
+    
+    <div class="center-core" id="zone-zero" onclick="handleZoneZero()">
+        <img src="https://via.placeholder.com/300/d4af37/000000?text=LOGO" alt="Logo">
     </div>
 
-    <div id="modal-social" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-social')">&times;</span><h2 class="modal-title">Communauté</h2><div class="circle-menu-container"><i class="fa-solid fa-share-nodes center-icon-deco"></i><a href="#" class="circle-item cp-1"><i class="fa-brands fa-instagram"></i><span>Insta</span></a><a href="#" class="circle-item cp-2"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a><a href="#" class="circle-item cp-3"><i class="fa-brands fa-facebook"></i><span>Fb</span></a><a href="#" class="circle-item cp-4"><i class="fa-brands fa-whatsapp"></i><span>What</span></a><a href="#" class="circle-item cp-5"><i class="fa-brands fa-snapchat"></i><span>Snap</span></a><a href="#" class="circle-item cp-6"><i class="fa-brands fa-x-twitter"></i><span>X</span></a></div></div></div>
+    <div class="orbit-btn pos-1" onclick="openModal('modal-plat')">
+        <i class="fa-solid fa-utensils"></i>
+        <span>Plat</span>
+    </div>
+
+    <div class="orbit-btn pos-2" onclick="openModal('modal-menu')">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Carte</span>
+    </div>
+
+    <div class="orbit-btn pos-3" onclick="openModal('modal-avis')">
+        <i class="fa-solid fa-star"></i>
+        <span>Avis</span>
+    </div>
+
+    <div class="orbit-btn pos-4" onclick="openModal('modal-social')">
+        <i class="fa-solid fa-hashtag"></i>
+        <span>Suivre</span>
+    </div>
+
+    <div class="orbit-btn pos-5" onclick="openModal('modal-plus')">
+        <i class="fa-solid fa-plus"></i>
+        <span>Hub</span>
+    </div>
+
+    <div class="orbit-btn pos-6" onclick="openModal('modal-wifi')">
+        <i class="fa-solid fa-wifi"></i>
+        <span>Wi-Fi</span>
+    </div>
+</div>
+ <div id="modal-social" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-social')">&times;</span><h2 class="modal-title">Communauté</h2><div class="circle-menu-container"><i class="fa-solid fa-share-nodes center-icon-deco"></i><a href="#" class="circle-item cp-1"><i class="fa-brands fa-instagram"></i><span>Insta</span></a><a href="#" class="circle-item cp-2"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a><a href="#" class="circle-item cp-3"><i class="fa-brands fa-facebook"></i><span>Fb</span></a><a href="#" class="circle-item cp-4"><i class="fa-brands fa-whatsapp"></i><span>What</span></a><a href="#" class="circle-item cp-5"><i class="fa-brands fa-snapchat"></i><span>Snap</span></a><a href="#" class="circle-item cp-6"><i class="fa-brands fa-x-twitter"></i><span>X</span></a></div></div></div>
     <div id="modal-plus" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-plus')">&times;</span><h2 class="modal-title">Services</h2><div class="circle-menu-container"><i class="fa-solid fa-bell-concierge center-icon-deco"></i><a href="#" class="circle-item cp-1"><i class="fa-brands fa-uber"></i><span>Uber</span></a><a href="#" class="circle-item cp-2"><i class="fa-solid fa-calendar-check"></i><span>Book</span></a><a href="#" class="circle-item cp-3"><i class="fa-solid fa-gifts"></i><span>Promo</span></a><a href="#" class="circle-item cp-4"><i class="fa-brands fa-tripadvisor"></i><span>Trip</span></a><a href="#" class="circle-item cp-5"><i class="fa-solid fa-utensils"></i><span>Fork</span></a><a href="#" class="circle-item cp-6"><i class="fa-solid fa-envelope"></i><span>Mail</span></a></div></div></div>
     
     <div id="modal-plat" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-plat')">&times;</span><h2 class="modal-title">Suggestion</h2><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500" class="modal-image"><h3>Souris d'Agneau</h3><p>Cuisson 7h au thym.</p></div></div>
@@ -170,3 +194,4 @@
     </script>
 </body>
 </html>
+
