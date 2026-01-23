@@ -99,7 +99,8 @@
     text-decoration: none; color: white;
     transition: all 0.3s ease;
     transform: translate(var(--x), var(--y));
-    z-index: 2;}
+    z-index: 2;
+}
 .cp-1 { --x: 0%;    --y: -140%; }
 .cp-2 { --x: 130%;  --y: -70%;  }
 .cp-3 { --x: 130%;  --y: 70%;   }
@@ -139,8 +140,27 @@
     align-items: center;
 }
         .modal-image { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; color: var(--gold); cursor: pointer; }
-        .modal-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 20px; text-transform: uppercase; }
+     .modal-title { 
+    position: absolute; 
+    top: 8%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    color: var(--gold); 
+    font-size: 1.2rem; 
+    text-transform: uppercase; 
+    font-weight: bold;
+    margin: 0;
+}
+
+.close-btn { 
+    position: absolute; 
+    top: 15px; 
+    right: 20px; 
+    font-size: 24px; 
+    color: var(--gold); 
+    cursor: pointer; 
+    z-index: 2000;
+} 
         .action-btn { display: inline-block; background: var(--gold); color: black; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
@@ -204,6 +224,7 @@
     </script>
 </body>
 </html>
+
 
 
 
