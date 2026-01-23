@@ -139,16 +139,18 @@
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     text-decoration: none; color: white;
+will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
     
-    /* Positionnement de base au centre */
-    top: 50%; left: 50%;
-    margin-top: -35px; margin-left: -35px;
-    
-    /* On utilise les variables pour le placement */
-    transform: translate(var(--x), var(--y));
-    transition: all 0.3s ease;
+    /* Équation de positionnement orbital pur (Container 280px / Item 70px) */
+    /* Centre (140px) - Rayon Item (35px) = 105px */
+    transform: translate(calc(105px + var(--x)), calc(105px + var(--y)));
 }
 
+.circle-item:hover {
+    /* Injection du scale sans rupture de matrice */
+    transform: translate(calc(105px + var(--x)), calc(105px + var(--y))) scale(1.1);
+}
 .circle-item i { font-size: 1.5rem; color: #d4af37; margin-bottom: 4px; }
 .circle-item span { font-size: 0.55rem; text-transform: uppercase; }
 
@@ -344,6 +346,7 @@ function closeModal(id) {
     </script>
 </body>
 </html>
+
 
 
 
