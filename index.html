@@ -174,12 +174,10 @@
     <div class="center-core" id="zone-zero" onclick="handleZoneZero()">
         <img src="https://via.placeholder.com/300/d4af37/000000?text=LOGO" alt="Logo">
     </div>
-
-    <div class="orbit-btn pos-1" onclick="openModal('modal-plat')">
-        <i class="fa-solid fa-utensils"></i>
-        <span>Plat</span>
-    </div>
-
+    <div class="orbit-btn pos-1" onclick="ouvrirPlat()">
+    <i class="fa-solid fa-utensils"></i>
+    <span>Plat</span>
+</div>
     <div class="orbit-btn pos-2" onclick="openModal('modal-menu')">
         <i class="fa-solid fa-book-open"></i>
         <span>Carte</span>
@@ -222,16 +220,30 @@
             openModal('modal-video');
         }
         window.onclick = function(e) { if (e.target.classList.contains('modal')) closeModal(e.target.id); }
+  async function ouvrirPlat() {
+    const url = 'https://raw.githubusercontent.com/mkfprod2025-cloud/module-clientelle-et-fidelite/84511facd887f1e541027a578db98e02d5cbf842/platdujours.json';
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Mise à jour des données
+        const modal = document.getElementById('modal-plat');
+        modal.querySelector('h3').innerText = data.nom;
+        modal.querySelector('p').innerText = data.description;
+        modal.querySelector('.modal-image').src = data.image;
+        
+        // Affichage de la modal
+        modal.classList.add('active');
+    } catch (error) {
+        console.error("Erreur :", error);
+        // Secours : ouvre quand même la modal avec le texte par défaut en cas d'erreur réseau
+        document.getElementById('modal-plat').classList.add('active');
+    }
+}
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
 
 
 
