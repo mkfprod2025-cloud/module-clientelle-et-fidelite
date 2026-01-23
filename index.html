@@ -130,65 +130,56 @@
         .modal-text { font-size: 0.95rem; line-height: 1.5; color: #ddd; margin-bottom: 20px; }
         .modal-image { width: 100%; border-radius: 12px; margin-bottom: 15px; height: 180px; object-fit: cover; }
         
-        /* --- Styles Spécifiques aux Grilles (Social & Services) --- */
-   /* --- Nouveau Menu Orbital Social --- */
-.social-orbital {
+/* --- CONTAINER DU SOUS-MENU (Cercle Fixe) --- */
+.circle-menu-container {
     position: relative;
-    width: 280px;
-    height: 280px;
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 280px; height: 280px;
+    margin: 10px auto;
+    border-radius: 50%;
 }
 
-/* Les icônes sociales positionnées en cercle */
-.social-item-orbital {
+/* --- LES BOUTONS DU SOUS-MENU --- */
+.circle-item {
     position: absolute;
-    width: 70px;
-    height: 70px;
-    background: rgba(255, 255, 255, 0.05);
+    width: 70px; height: 70px;
+    background: rgba(30, 30, 30, 0.9);
     border: 1px solid rgba(212, 175, 55, 0.3);
     border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-decoration: none; color: white;
+    transition: transform 0.2s ease; /* Animation fluide au clic/survol */
+    
+    /* On centre tout par défaut pour utiliser translate ensuite */
+    top: 50%; left: 50%;
+    margin-top: -35px; margin-left: -35px; 
 }
 
-.social-item-orbital i { 
-    font-size: 1.8rem; 
-    color: var(--gold); 
+.circle-item i { font-size: 1.5rem; color: #d4af37; margin-bottom: 4px; }
+.circle-item span { font-size: 0.55rem; text-transform: uppercase; }
+
+/* Effet simple au survol (Grossissement) */
+.circle-item:hover {
+    transform: scale(1.15); 
+    background: rgba(212, 175, 55, 0.15);
+    border-color: #d4af37;
+    z-index: 10;
 }
 
-.social-item-orbital span { 
-    font-size: 0.5rem; 
-    color: white; 
-    text-transform: uppercase; 
-    margin-top: 4px;
-}
+/* --- POSITIONS FIXES (Coordonnées mathématiques) --- */
+/* cp-1 = Haut, cp-2 = Haut-Droite, etc. */
+.cp-1 { transform: translate(0, -105px); }      
+.cp-2 { transform: translate(91px, -52px); }    
+.cp-3 { transform: translate(91px, 52px); }     
+.cp-4 { transform: translate(0, 105px); }       
+.cp-5 { transform: translate(-91px, 52px); }    
+.cp-6 { transform: translate(-91px, -52px); }   
 
-.social-item-orbital:hover {
-    background: rgba(212, 175, 55, 0.1);
-    box-shadow: 0 0 15px var(--gold-glow);
-    transform: scale(1.1);
-}
-
-/* Calcul des positions circulaires (Rayon de 100px) */
-.s-1 { transform: translate(0, -100px); }    /* Haut */
-.s-2 { transform: translate(87px, -50px); }  /* Haut-Droite */
-.s-3 { transform: translate(87px, 50px); }   /* Bas-Droite */
-.s-4 { transform: translate(0, 100px); }     /* Bas */
-.s-5 { transform: translate(-87px, 50px); }  /* Bas-Gauche */
-.s-6 { transform: translate(-87px, -50px); } /* Haut-Gauche */
-
-/* Icône centrale décorative */
-.social-center-icon {
-    font-size: 2.5rem;
-    color: var(--gold);
-    opacity: 0.5;
+/* Décoration au centre (icône fantôme) */
+.center-icon-deco {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem; color: #d4af37; opacity: 0.3;
 }
         /* Vidéo */
         .video-box { width: 100%; aspect-ratio: 16/9; background: black; border-radius: 10px; overflow: hidden; }
@@ -377,5 +368,6 @@
     </script>
 </body>
 </html>
+
 
 
