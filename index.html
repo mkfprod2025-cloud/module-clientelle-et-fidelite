@@ -23,107 +23,109 @@
         overflow: hidden; touch-action: none;
     }
 
-    /* --- MENU PRINCIPAL (HUB) --- */
+    /* --- HUB PRINCIPAL --- */
     .orbital-container {
         position: relative;
-        /* Utilisation de vmin pour remplir l'écran dynamiquement */
-        width: 85vmin; height: 85vmin; 
-        max-width: 450px; max-height: 450px;
+        width: 90vmin; height: 90vmin; /* Remplit l'écran sans déborder */
+        max-width: 420px; max-height: 420px;
         display: flex; justify-content: center; align-items: center;
     }
 
     .main-ring {
-        position: absolute; width: 80%; height: 80%;
+        position: absolute; width: 75%; height: 75%;
         border: 1px solid var(--ring-color); border-radius: 50%;
+        z-index: 0;
     }
 
-    /* LOGO : Plus grand et en dessous */
+    /* LOGO : Grandit et passe en dessous */
     .center-core {
         position: absolute;
-        width: 45%; height: 45%; /* Agrandit pour empiéter sur l'orbite */
+        width: 48%; height: 48%; /* Empiète visuellement */
         border-radius: 50%;
         border: 2px solid var(--gold);
         overflow: hidden;
-        z-index: 1; /* Inférieur aux boutons (z-index 5) */
-        background: var(--bg-dark);
+        z-index: 1; /* Sous les boutons */
+        background: #000;
         transition: transform 0.3s ease;
     }
     .center-core img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* BOUTONS : Plus gros pour l'aspect "rempli" */
+    /* BOUTONS DU HUB */
     .orbit-btn {
-        position: absolute; 
-        width: 30%; height: 30%; /* Taille augmentée */
-        background: rgba(10, 10, 10, 0.9);
-        border: 1px solid rgba(212, 175, 55, 0.6);
-        border-radius: 50%; display: flex; flex-direction: column;
+        position: absolute;
+        width: 30%; height: 30%; /* Taille généreuse */
+        background: rgba(15, 15, 15, 0.98);
+        border: 1px solid var(--gold);
+        border-radius: 50%;
+        display: flex; flex-direction: column;
         justify-content: center; align-items: center;
-        color: var(--gold); backdrop-filter: blur(10px); 
-        z-index: 5; /* Passe par dessus le logo */
-        cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 5; /* Au-dessus du logo */
+        cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    .orbit-btn i { font-size: 1.4rem; margin-bottom: 4px; }
+    .orbit-btn span { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
 
-    /* Positions ajustées pour un aspect compact et harmonieux */
-    .pos-1 { top: -5%; } 
-    .pos-2 { top: 18%; right: -5%; }
-    .pos-3 { bottom: 18%; right: -5%; } 
-    .pos-4 { bottom: -5%; }
-    .pos-5 { bottom: 18%; left: -5%; } 
-    .pos-6 { top: 18%; left: -5%; }
+    /* Positions Hub (Calculées pour ne pas s'excentrer) */
+    .pos-1 { top: 0%; }
+    .pos-2 { top: 20%; right: 0%; }
+    .pos-3 { bottom: 20%; right: 0%; }
+    .pos-4 { bottom: 0%; }
+    .pos-5 { bottom: 20%; left: 0%; }
+    .pos-6 { top: 20%; left: 0%; }
 
-    .orbit-btn i { font-size: 1.4rem; margin-bottom: 5px; }
-    .orbit-btn span { font-size: 0.7rem; text-transform: uppercase; font-weight: 800; }
-
-    /* --- BOUTONS INTERNES (MODALS) --- */
+    /* --- MENU INTERNE (MODALS) --- */
     .circle-menu-container {
         position: relative;
-        width: 70vw; height: 70vw;
-        max-width: 300px; max-height: 300px;
+        width: 280px; height: 280px;
         margin: 20px auto;
+        display: flex; justify-content: center; align-items: center;
+    }
+
+    .center-icon-deco {
+        font-size: 3rem; color: var(--gold); opacity: 0.15;
     }
 
     .circle-item {
         position: absolute;
-        top: 50%; left: 50%;
-        width: 28%; height: 28%; /* Plus gros sur mobile */
-        background: rgba(25, 25, 25, 0.95);
+        width: 80px; height: 80px; /* Taille fixe pour éviter l'excentrage du contenu */
+        background: rgba(20, 20, 20, 0.95);
         border: 1px solid var(--gold);
-        border-radius: 50%; display: flex; flex-direction: column;
+        border-radius: 50%;
+        display: flex; flex-direction: column;
         justify-content: center; align-items: center;
         text-decoration: none; color: white;
-        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
-        transition: all 0.3s ease;
         z-index: 10;
+        transition: all 0.3s ease;
     }
+    
+    /* Positionnement par translation pure par rapport au centre du parent */
+    .cp-1 { transform: translateY(-100px); }
+    .cp-2 { transform: translate(87px, -50px); }
+    .cp-3 { transform: translate(87px, 50px); }
+    .cp-4 { transform: translateY(100px); }
+    .cp-5 { transform: translate(-87px, 50px); }
+    .cp-6 { transform: translate(-87px, -50px); }
 
-    /* Coordonnées radiales optimisées */
-    .cp-1 { --x: 0%;    --y: -135%; }
-    .cp-2 { --x: 115%;  --y: -65%; }
-    .cp-3 { --x: 115%;  --y: 65%; }
-    .cp-4 { --x: 0%;    --y: 135%; }
-    .cp-5 { --x: -115%; --y: 65%; }
-    .cp-6 { --x: -115%; --y: -65%; }
-
-    .circle-item i { font-size: 1.3rem; color: var(--gold); margin-bottom: 4px; }
+    .circle-item i { font-size: 1.5rem; color: var(--gold); margin-bottom: 4px; }
     .circle-item span { font-size: 0.6rem; font-weight: bold; }
 
-    /* --- Modals --- */
+    /* --- STRUCTURE MODAL --- */
     .modal {
         display: none; position: fixed; z-index: 1000;
         left: 0; top: 0; width: 100%; height: 100%;
-        background: var(--modal-bg); backdrop-filter: blur(20px);
+        background: var(--modal-bg); backdrop-filter: blur(15px);
         justify-content: center; align-items: center;
-        opacity: 0; transition: opacity 0.3s ease;
     }
     .modal.active { display: flex; opacity: 1; }
     .modal-content {
-        background: var(--modal-card); width: 90%; max-width: 400px;
-        padding: 40px 10px; border-radius: 25px; border: 1px solid var(--gold-glow);
-        position: relative;
+        background: var(--modal-card); width: 90%; max-width: 380px;
+        padding: 30px 10px; border-radius: 20px; border: 1px solid var(--gold-glow);
+        position: relative; text-align: center;
     }
-    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: var(--gold); }
-</style>
-  </head>
+    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: var(--gold); cursor: pointer; }
+    .modal-title { color: var(--gold); font-size: 1.3rem; margin-bottom: 20px; }
+</style> </head>
 <body>
 
     <div class="bokeh"></div>
@@ -287,6 +289,7 @@ window.onclick = function(e) {
 } </script>
 </body>
 </html>
+
 
 
 
