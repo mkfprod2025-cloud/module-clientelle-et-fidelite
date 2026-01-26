@@ -178,21 +178,18 @@ body { background: var(--bg-main); color: var(--gold); }
     <div id="modal-video" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('modal-video')">&times;</span><div class="video-box" id="video-container"></div></div></div>
     <script>
         window.hubData = {};
-
-async function initHub() {
-   const G_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwW1cinfzVFykwZq6BgsiST4R8d_HBsV0AsH7aUyHc4hyV62ynE7AQrh_W17hqMKoo_aQ/exec";
-    try {
-        const response = await fetch(G_SCRIPT_URL);
-        const data = await response.json();
-        window.hubData = data;
-
-        applyBranding(data.branding);
-        renderOrbitButtons(data.bulles);
-    } catch (e) {
-        console.error("Initialisation impossible : Vérifiez l'URL du script.");
-    }
+function loadHubData(data) {
+  window.hubData = data;
+  applyBranding(data.branding);
+  renderOrbitButtons(data.bulles);
 }
 
+function initHub() {
+  const G_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwW1cinfzVFykwZq6BgsiST4R8d_HBsV0AsH7aUyHc4hyV62ynE7AQrh_W17hqMKoo_aQ/exec";
+  const script = document.createElement('script');
+  script.src = G_SCRIPT_URL + '?callback=loadHubData';
+  document.body.appendChild(script);
+}
 function applyBranding(config) {
     const root = document.documentElement.style;
     root.setProperty('--gold', config.accent_hex);
@@ -239,6 +236,7 @@ window.onload = initHub;
    </script>
 </body>
 </html>
+
 
 
 
