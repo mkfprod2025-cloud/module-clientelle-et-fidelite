@@ -1,5 +1,5 @@
 {
   branding: { accent_hex, bg_type, bg_val, logo_src, video_id },
-  bulle: [{ pos_id, label, icon_data, active, action, target }],
+  bulles: [{ pos_id, label, icon_data, active, action, target }],
   plat: { nom, description, image }
 }
