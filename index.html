@@ -180,7 +180,7 @@ body { background: var(--bg-main); color: var(--gold); }
         window.hubData = {};
 
 async function initHub() {
-    const G_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymU2QicqSVkJhas4-o2cg9h9fHz_qLEIWTEYdmFUXQm-Aka8XffAU0kgdoTTtpSk3NkQ/exec";
+    const G_SCRIPT_URL = "https://script.google.com/macros/s/.../exec";
     try {
         const response = await fetch(G_SCRIPT_URL);
         const data = await response.json();
@@ -239,6 +239,7 @@ window.onload = initHub;
    </script>
 </body>
 </html>
+
 
 
 
