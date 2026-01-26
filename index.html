@@ -6,16 +6,14 @@
     <title>Hub Orbital - Final Version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --gold: #d4af37;
-            --gold-glow: rgba(212, 175, 55, 0.4);
-            --bg-dark: #050505;
-            --ring-color: rgba(212, 175, 55, 0.15);
-            --modal-bg: rgba(0, 0, 0, 0.96);
-            --modal-card: #121212;
-        }
-
-        /* --- Base --- */
+ :root {
+    --gold: #d4af37;
+    --bg-main: #050505;
+    --logo-url: url('https://via.placeholder.com/300');
+}
+body { background: var(--bg-main); color: var(--gold); }
+.orbit-btn, .modal { border-color: var(--gold); color: var(--gold); }
+.center-core { border-color: var(--gold); }
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: var(--bg-dark); color: var(--gold);
@@ -243,9 +241,46 @@ async function ouvrirPlat() {
         document.getElementById('modal-plat').classList.add('active');
     }
 }
-    </script>
+ function applyBranding(config) {
+    // 1. Injection CSS globale
+    let style = document.getElementById('dynamic-branding');
+    if (!style) {
+        style = document.createElement('style');
+        style.id = 'dynamic-branding';
+        document.head.appendChild(style);
+    }
+    
+    style.innerHTML = `
+        :root {
+            --gold: ${config.accent_hex};
+            --bg-main: ${config.bg_type === 'color' ? config.bg_val : `url(${config.bg_val})`};
+        }
+    `;
+
+    // 2. Mise à jour du Logo
+    const logo = document.querySelector('.center-core img');
+    if (logo) logo.src = config.logo_src;
+}
+       async function initHub() {
+    const G_SCRIPT_URL = "VOTRE_URL_SCRIPT_UNIQUE";
+    try {
+        const response = await fetch(G_SCRIPT_URL);
+        const globalData = await response.json();
+        
+        // Appliquer le branding immédiatement
+        applyBranding(globalData.branding);
+        
+        // Stocker le reste pour les modales (Bulles, Plat, etc.)
+        window.hubData = globalData; 
+    } catch (e) {
+        console.error("Échec initialisation critique.");
+    }
+}
+window.onload = initHub; 
+</script>
 </body>
 </html>
+
 
 
 
