@@ -232,10 +232,15 @@ function handleZoneZero() {
 }
 
 window.onclick = (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); };
-window.onload = initHub;
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHub);
+} else {
+    initHub();
+}
    </script>
 </body>
 </html>
+
 
 
 
