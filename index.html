@@ -194,9 +194,12 @@ function applyBranding(config) {
     const root = document.documentElement.style;
     root.setProperty('--gold', config.accent_hex);
     root.setProperty('--bg-main', config.bg_type === 'color' ? config.bg_val : `url(${config.bg_val})`);
-    document.querySelector('.center-core img').src = config.logo_src;
+    
+    const logo = document.querySelector('.center-core img');
+    if (logo && config.logo_src) logo.src = config.logo_src;
+    
+    document.body.style.fontFamily = config.font_family || 'Inter';
 }
-
 function renderOrbitButtons(bulles) {
     const wrapper = document.getElementById('orbit-wrapper');
     wrapper.innerHTML = ''; 
@@ -250,6 +253,7 @@ if (document.readyState === 'loading') {
    </script>
 </body>
 </html>
+
 
 
 
