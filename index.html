@@ -224,13 +224,23 @@ function closeModal(id) {
     document.getElementById(id).classList.remove('active');
     if(id === 'modal-video') document.getElementById('video-container').innerHTML = '';
 }
-
 function handleZoneZero() {
-    const videoId = window.hubData.branding.video_id || "dQw4w9WgXcQ";
-    document.getElementById('video-container').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+    const branding = window.hubData.branding;
+    const videoContainer = document.getElementById('video-container');
+    
+    if (branding.video_src) {
+        // Vidéo uploadée Drive
+        videoContainer.innerHTML = `<video width="100%" height="100%" controls autoplay><source src="${branding.video_src}" type="video/mp4"></video>`;
+    } else if (branding.texte_zone_zero) {
+        // Texte d'accueil
+        videoContainer.innerHTML = `<p style="color: var(--gold); font-size: 1.5rem; padding: 20px;">${branding.texte_zone_zero}</p>`;
+    } else {
+        // Fallback
+        videoContainer.innerHTML = `<p style="color: var(--gold);">Bienvenue</p>`;
+    }
+    
     openModal('modal-video');
 }
-
 window.onclick = (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); };
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initHub);
@@ -240,6 +250,7 @@ if (document.readyState === 'loading') {
    </script>
 </body>
 </html>
+
 
 
 
