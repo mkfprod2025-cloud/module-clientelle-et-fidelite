@@ -191,14 +191,27 @@ function initHub() {
   document.body.appendChild(script);
 }
 function applyBranding(config) {
+    console.log('applyBranding appelé avec:', config);
     const root = document.documentElement.style;
     root.setProperty('--gold', config.accent_hex);
     root.setProperty('--bg-main', config.bg_type === 'color' ? config.bg_val : `url(${config.bg_val})`);
     
     const logo = document.querySelector('.center-core img');
-    if (logo && config.logo_src) logo.src = config.logo_src;
+    console.log('Logo element:', logo);
+    console.log('Logo src à appliquer:', config.logo_src);
+    if (logo && config.logo_src) {
+        logo.src = config.logo_src;
+        logo.onerror = () => console.error('Erreur chargement logo');
+    }
+    // Charger la police depuis Google Fonts
+    const fontFamily = config.font_family || 'Inter';
+    const fontLink = document.createElement('link');
+    fontLink.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(' ', '+')}:wght@400;700&display=swap`;
+    fontLink.rel = 'stylesheet';
+    document.head.appendChild(fontLink);
     
-    document.body.style.fontFamily = config.font_family || 'Inter';
+    document.body.style.fontFamily = `'${fontFamily}', sans-serif`;
+    console.log('Police appliquée:', fontFamily);
 }
 function renderOrbitButtons(bulles) {
     const wrapper = document.getElementById('orbit-wrapper');
@@ -253,6 +266,7 @@ if (document.readyState === 'loading') {
    </script>
 </body>
 </html>
+
 
 
 
