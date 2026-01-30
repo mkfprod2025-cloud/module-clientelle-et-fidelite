@@ -194,7 +194,7 @@ function applyBranding(config) {
     const root = document.documentElement.style;
     root.setProperty('--gold', config.accent_hex);
     
-    // Gestion fond
+    // Fond d'écran
     if (config.bg_type === 'image' && config.bg_val) {
         document.body.style.backgroundImage = `url(${config.bg_val})`;
         document.body.style.backgroundSize = 'cover';
@@ -203,15 +203,14 @@ function applyBranding(config) {
         document.body.style.backgroundColor = config.bg_val;
     }
     
-    // Logo
+    // Logo zone centrale
     const logo = document.querySelector('.center-core img');
     if (logo && config.logo_src) {
         logo.src = config.logo_src;
     }
     
-    // Police (sans Google Fonts, utilise fallback système)
-    const fontFamily = config.font_family || 'Inter';
-    document.body.style.fontFamily = `${fontFamily}, sans-serif`;
+    // Police
+    document.body.style.fontFamily = `${config.font_family}, sans-serif`;
 }
 function renderOrbitButtons(bulles) {
     const wrapper = document.getElementById('orbit-wrapper');
@@ -266,6 +265,7 @@ if (document.readyState === 'loading') {
    </script>
 </body>
 </html>
+
 
 
 
